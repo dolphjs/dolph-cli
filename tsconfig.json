@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    /* LANGUAGE COMPILATION OPTIONS */
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "module": "Node16",
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+
+    "pretty": true,
+
+    /* EMIT RULES */
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "removeComments": true,
+
+    /* TYPE CHECKING RULES */
+    "strict": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": true,
+    "useUnknownInCatchVariables": true,
+    "noUncheckedIndexedAccess": true,
+
+    /* OTHER OPTIONS */
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    "baseUrl": "./src",
+    "outDir": "./dist"
+  },
+  "include": ["**/*.ts"]
+}

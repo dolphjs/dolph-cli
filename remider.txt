@@ -1,0 +1,8 @@
+there are two types  of projects: 
+
+- the large and
+- the small
+
+and the large only that supports the CLI options
+
+In the future, one config file should do
