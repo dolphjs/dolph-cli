@@ -22,7 +22,7 @@ export class ${className} extends DolphControllerHandler<Dolph> {
 
   @TryCatchAsyncDec
   public async defaultMethod (req: DRequest, res: DResponse) {
-    SuccessResponse({ res, body: { message: "${controllerName}" is working! } });
+    SuccessResponse({ res, body: { message: "${controllerName} is working!" } });
   }
 }
 `;
@@ -51,7 +51,7 @@ class ${className} extends DolphControllerHandler<Dolph> {
   }
 
   public async defaultMethod = TryCatchAsyncFn (async (req, res) => {
-    SuccessResponse({ res, body: { message: "${controllerName}" is working! } });
+    SuccessResponse({ res, body: { message: "${controllerName} is working!" } });
   });
 }
 
