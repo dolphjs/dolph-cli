@@ -5,4 +5,4 @@ there are two types  of projects:
 
 and the large only that supports the CLI options
 
-In the future, one config file should do
+In the future, one config file should do, chnage directry name to something liek this: user.controller.ts

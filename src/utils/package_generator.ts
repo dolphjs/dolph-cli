@@ -1,5 +1,6 @@
 import { program } from "commander";
 import colors from "colors";
+import * as controllerGen from "../generators/generate_controller.js";
 
 export const packageGenerator = () => {
   program
@@ -30,13 +31,21 @@ export const packageGenerator = () => {
       "Generates a dolphjs helper file."
     )
     .action(async (name: any, options: any) => {
-      const { controller, service, model, helper, routes, interfaces } = name;
+      Object.entries(name).forEach(([key, value]) => {
+        if (key && key.toLowerCase().includes("controller") && value) {
+          controllerGen.generateController(value.toString());
+        }
+      });
 
-      const controllerName = controller ? `${controller}` : undefined;
-      const serviceName = service ? `${service}` : undefined;
-      const modelName = model ? `${model}` : undefined;
-      const routesName = routes ? `${routes}` : undefined;
-      const interfacesName = interfaces ? `${interfaces}` : undefined;
-      const helperName = helper ? `${helper}` : undefined;
+      //   const controllerName = controller ? `${controller}` : undefined;
+      //   const serviceName = service ? `${service}` : undefined;
+      //   const modelName = model ? `${model}` : undefined;
+      //   const routesName = routes ? `${routes}` : undefined;
+      //   const interfacesName = interfaces ? `${interfaces}` : undefined;
+      //   const helperName = helper ? `${helper}` : undefined;
+
+      //   if (controllerName) {
+      //     controllerGen.generateController(controllerName);
+      //   }
     });
 };

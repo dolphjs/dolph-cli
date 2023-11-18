@@ -6,6 +6,7 @@ import figlet from "figlet";
 import { packageDescription } from "./utils/package_description.js";
 import { configurePackage } from "./utils/read_user_config.js";
 import { InitDolphCli } from "./utils/package_init.js";
+import { packageGenerator } from "./utils/package_generator.js";
 
 figlet.text(
   "Dolphjs CLI",
@@ -26,6 +27,8 @@ figlet.text(
     InitDolphCli();
     packageDescription();
     configurePackage();
+    packageGenerator();
+
     program.parse(process.argv);
   }
 );

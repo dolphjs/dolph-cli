@@ -6,7 +6,7 @@ import colors from "colors";
 import { DefaultConfig } from "../types/config.js";
 
 export const initDolphCli = () => {
-  const configFolderPath = path.join(process.cwd(), "dolph-cli");
+  const configFolderPath = path.join(process.cwd());
   const userConfigFilePath = path.join(configFolderPath, "dolph-cli.yaml");
 
   if (!existsSync(configFolderPath)) {
