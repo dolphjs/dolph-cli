@@ -60,10 +60,7 @@ export const generateController = async (name: string) => {
       : controllerDir;
 
   const controllerFilePath = path.join(
-    controllerDirName +
-      `/${name.inverse.charAt(0) !== "s" ? `${name}` : `${name + "s"}`}.${
-        readConfig().language
-      }`
+    controllerDirName + `/${name}.controller.${readConfig().language}`
   );
 
   try {
@@ -75,7 +72,7 @@ export const generateController = async (name: string) => {
     //TODO: if no index.ts file, create one too
 
     generateControllerFile(
-      `${name.inverse.charAt(0) !== "s" ? `${name}` : `${name + "s"}`}`,
+      name,
       path.join(controllerFilePath),
       readConfig
       // controllerDirName,
@@ -86,7 +83,9 @@ export const generateController = async (name: string) => {
 
   console.log(
     `${colors.bold(
-      colors.green(`${name} Controller generated successfully! 🙃`)
+      colors.green(
+        `${name}.controller.${readConfig().language} generated successfully! 🙃`
+      )
     )}`
   );
 };

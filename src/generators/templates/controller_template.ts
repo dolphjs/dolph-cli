@@ -45,12 +45,12 @@ const {
   TryCatchAsyncFn,
 } = require("@dolphjs/dolph/common");
 
-class ${className} extends DolphControllerHandler<Dolph> {
+class ${className} extends DolphControllerHandler {
   constructor() {
     super();
   }
 
-  public async defaultMethod = TryCatchAsyncFn (async (req, res) => {
+  defaultMethod = TryCatchAsyncFn (async (req, res) => {
     SuccessResponse({ res, body: { message: "${controllerName} is working!" } });
   });
 }
@@ -68,7 +68,7 @@ const generateFnTsTemplate = (controllerName: string) => {
 import { TryCatchAsyncFn, SuccessResponse, DRequest, DResponse } from "@dolphjs/dolph/common";
 
 export const defaultFunc = TryCatchAsyncFn(async (req: DRequest, res: DResponse) => {
-  SuccessResponse({ res, body: { message: "${controllerName}" working! } });
+  SuccessResponse({ res, body: { message: "${controllerName} working!" } });
 });
 
 `;
@@ -83,7 +83,7 @@ const generateFnJsTemplate = (controllerName: string) => {
 const { TryCatchAsyncFn, SuccessResponse } = require("@dolphjs/dolph/common");
 
 const defaultFunc = TryCatchAsyncFn(async (req, res) => {
-  SuccessResponse({ res, body: { message: "${controllerName}" working! } });
+  SuccessResponse({ res, body: { message: "${controllerName} working!" } });
 });
 
 module.exports = { defaultFunc };

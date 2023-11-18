@@ -9,7 +9,7 @@ import { InitDolphCli } from "./utils/package_init.js";
 import { packageGenerator } from "./utils/package_generator.js";
 
 figlet.text(
-  "Dolphjs CLI",
+  "dolphjs CLI",
   {
     font: "Big",
     horizontalLayout: "default",
