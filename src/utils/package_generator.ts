@@ -3,6 +3,10 @@ import colors from "colors";
 import * as controllerGen from "../generators/generate_controller.js";
 import * as serviceGen from "../generators/generate_service.js";
 import * as routesGen from "../generators/generate_routes.js";
+import * as modelGen from "../generators/generate_model.js";
+import * as mysqlGen from "../generators/generate_mysql.js";
+import { readConfig } from "./read_user_config_path.js";
+import { addRoutesIndexFile } from "../registers/register_routes.js";
 
 export const packageGenerator = () => {
   program
@@ -20,10 +24,10 @@ export const packageGenerator = () => {
       "-r, --routes" + colors.bold(colors.blue("<name>")),
       "Generates a dolphjs routes file."
     )
-    // .option(
-    //   "-m, --model" + colors.bold(colors.blue("<name>")),
-    //   "Generates a dolphjs model file."
-    // )
+    .option(
+      "-m, --models" + colors.bold(colors.blue("<name>")),
+      "Generates a dolphjs models file."
+    )
     // .option(
     //   "-in, --interfaces" + colors.bold(colors.blue("<name>")),
     //   "Generates a dolphjs interfaces file."
@@ -42,6 +46,13 @@ export const packageGenerator = () => {
         }
         if (key && key.toLowerCase().includes("routes") && value) {
           routesGen.generateRouter(value.toString());
+          addRoutesIndexFile(value.toString());
+        }
+        if (key && key.toLowerCase().includes("models") && value) {
+          modelGen.generateModel(value.toString());
+          if (readConfig().database === "mysql") {
+            mysqlGen.generateConfig(value.toString());
+          }
         }
       });
 

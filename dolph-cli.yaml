@@ -1,4 +1,4 @@
 language: js
-generateFolder: 'true'
-paradigm: functional
+generateFolder: "true"
+paradigm: oop
 database: mongo

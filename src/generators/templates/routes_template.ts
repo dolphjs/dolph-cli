@@ -36,7 +36,7 @@ const generateOopJsTemplate = (routerName: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  const className = capitalizeFirstLetter(routerName) + "Controller";
+  const className = capitalizeFirstLetter(routerName) + "Router";
 
   template = `
 const { DolphRouteHandler } = require("@dolphjs/dolph/classes");
