@@ -6,7 +6,6 @@ import yaml from "js-yaml";
 const filePath = getUserConfigFilePath();
 
 export const readConfig = () => {
-  console.log("read config");
   try {
     const data = readFileSync(filePath, "utf8");
     const yamlData = yaml.load(data);
