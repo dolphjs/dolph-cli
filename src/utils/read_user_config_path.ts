@@ -6,12 +6,14 @@ import yaml from "js-yaml";
 const filePath = getUserConfigFilePath();
 
 export const readConfig = () => {
+  console.log("read config");
   try {
-    const data = readFileSync(filePath, "utf-8");
+    const data = readFileSync(filePath, "utf8");
     const yamlData = yaml.load(data);
     const jsonData = JSON.stringify(yamlData);
     return JSON.parse(jsonData.toString());
   } catch (e: any) {
+    console.log(e);
     console.log(
       colors.bold(
         colors.red(

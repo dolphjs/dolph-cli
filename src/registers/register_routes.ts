@@ -1,7 +1,6 @@
 import colors from "colors";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
-import { readConfig } from "../utils/read_user_config_path.js";
 
 const findRoutesDirectory = () => {
   const rootDir = process.cwd();
@@ -22,21 +21,20 @@ const findRoutesDirectory = () => {
   return routesDir ? path.join(rootDir, routesDir) : null;
 };
 
-let extension: string;
+export const addRoutesIndexFile = (routesName: string, readConfig: any) => {
+  let extension: string;
 
-switch (readConfig().language) {
-  case "ts":
-    extension = "ts";
-    break;
-  case "js":
-    extension = "js";
-    break;
-  default:
-    extension = "ts";
-    break;
-}
-
-export const addRoutesIndexFile = (routesName: string) => {
+  switch (readConfig().language) {
+    case "ts":
+      extension = "ts";
+      break;
+    case "js":
+      extension = "js";
+      break;
+    default:
+      extension = "ts";
+      break;
+  }
   if (!routesName)
     colors.bold(colors.red("Routes extension or name is required! 🤨"));
 
@@ -83,13 +81,6 @@ export const addRoutesIndexFile = (routesName: string) => {
       // if it doesn't exist, create file and add import statement
       const fileContent = `${importStatement}\n\n${routesArray}\n`;
       writeFileSync(indexPath, fileContent);
-      console.log(
-        colors.bold(
-          colors.blue(
-            `added ${capitalizedString}Router to routes array in index.${extension} file`
-          )
-        )
-      );
     } else {
       const fileContent = readFileSync(indexPath, "utf8");
       const newRouterInstance = `new ${capitalizedString}Router()`;
@@ -97,13 +88,6 @@ export const addRoutesIndexFile = (routesName: string) => {
       if (!fileContent.includes(importStatement)) {
         const updatedContent = `${importStatement}\n${fileContent}`;
         writeFileSync(indexPath, updatedContent);
-        console.log(
-          colors.bold(
-            colors.blue(
-              `added ${capitalizedString}Router to routes array in index.${extension} file`
-            )
-          )
-        );
       }
 
       if (
@@ -118,12 +102,15 @@ export const addRoutesIndexFile = (routesName: string) => {
           );
           if (routesArrayMatch) {
             const existingRoutes = routesArrayMatch[1].trim();
-            const updatedContents = fileContent.replace(
+            const fileContents = fileContent.replace(
               existingRoutes,
               `${
                 existingRoutes.length > 0 ? existingRoutes + ", " : ""
               }${newRouterInstance}`
             );
+
+            const updatedContents = `${importStatement}\n${fileContents}`;
+
             writeFileSync(indexPath, updatedContents);
           }
         } else {
@@ -132,22 +119,17 @@ export const addRoutesIndexFile = (routesName: string) => {
           );
           if (routesArrayMatch) {
             const existingRoutes = routesArrayMatch[1].trim();
-            const updatedContents = fileContent.replace(
+            const fileContents = fileContent.replace(
               existingRoutes,
               `${
                 existingRoutes.length > 0 ? existingRoutes + ", " : ""
               }${newRouterInstance}`
             );
+
+            const updatedContents = `${importStatement}\n${fileContents}`;
             writeFileSync(indexPath, updatedContents);
           }
         }
-        console.log(
-          colors.bold(
-            colors.blue(
-              `added ${capitalizedString}Router to routes array in index.${extension} file`
-            )
-          )
-        );
       } else {
         // if there is no routes array, add new one
         if (extension === "ts") {
@@ -157,15 +139,15 @@ export const addRoutesIndexFile = (routesName: string) => {
           const updatedContents = `${fileContent.trim()}\n\nconst routes = [${newRouterInstance}];\n\n module.exports = { routes } \n`;
           writeFileSync(indexPath, updatedContents);
         }
-        console.log(
-          colors.bold(
-            colors.blue(
-              `added ${capitalizedString}Router to routes array in index.${extension} file`
-            )
-          )
-        );
       }
     }
+    console.log(
+      colors.bold(
+        colors.green(
+          `added ${capitalizedString}Router to routes array in index.${extension} file`
+        )
+      )
+    );
   } catch (e: any) {
     console.log(colors.bold(colors.red(e)));
   }

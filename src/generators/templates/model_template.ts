@@ -80,7 +80,7 @@ module.exports = { ${capitalizeFirstLetter(modelName)}Model }
 
   if (isMysql) {
     template = `
-const { sequelizeInstance } = require("../../../configs/db");
+const { sequelizeInstance } = require("../../../configs/db.configs");
 const { DataTypes } = require("sequelize");
 
 const User = sequelizeInstance.define("user", {
@@ -178,7 +178,7 @@ module.exports = { ${capitalizeFirstLetter(modelName)}Model };
   }
   if (isMysql) {
     template = `
-const { sequelizeInstance } = require("../../../configs/db");
+const { sequelizeInstance } = require("../../../configs/db.configs");
 const { DataTypes } = require("sequelize");
 
 const User = sequelizeInstance.define("user", {

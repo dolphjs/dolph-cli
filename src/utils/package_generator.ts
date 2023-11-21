@@ -46,7 +46,7 @@ export const packageGenerator = () => {
         }
         if (key && key.toLowerCase().includes("routes") && value) {
           routesGen.generateRouter(value.toString());
-          addRoutesIndexFile(value.toString());
+          addRoutesIndexFile(value.toString(), readConfig);
         }
         if (key && key.toLowerCase().includes("models") && value) {
           modelGen.generateModel(value.toString());
