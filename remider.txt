@@ -7,7 +7,7 @@ and the large only that supports the CLI options
 - fix error resulting if a file exists already and also make it possible to create a directory if it doesn't exist
 - remove the folder after configs folder
 
-
+remeber to add  a general generate command to take one name and use it for [routes. model. controllers & services]
 
 
 update to cli-colors or chalk
