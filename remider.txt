@@ -1,15 +1,14 @@
 there are two types  of projects: 
+and the large only that supports the CLI options
 
 - the large and
 - the small
 
 - fix error resulting if a file exists already and also make it possible to create a directory if it doesn't exist
-
-- fix error that makes functional programming mic with oop template for routes/index
-
 - remove the folder after configs folder
 
-and the large only that supports the CLI options
+
+
 
 update to cli-colors or chalk
 

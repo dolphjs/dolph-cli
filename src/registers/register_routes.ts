@@ -85,11 +85,13 @@ export const addRoutesIndexFile = (routesName: string, readConfig: any) => {
     }
   } else {
     routesArray = `const routes = [new ${capitalizedString}Router()]; 
-        module.exports  = { routes };
+module.exports  = { routes };
         `;
 
     if (paradigm !== "oop") {
-      routesArray = `const routes = [${routesName}Routes];`;
+      routesArray = `const routes = [${routesName}Routes];
+module.exports  = { routes }; 
+      `;
     }
   }
 
@@ -121,13 +123,23 @@ export const addRoutesIndexFile = (routesName: string, readConfig: any) => {
           );
           if (routesArrayMatch) {
             const existingRoutes = routesArrayMatch[1].trim();
+            let fileContents: any;
 
-            const fileContents = fileContent.replace(
-              existingRoutes,
-              `${existingRoutes.length > 0 ? existingRoutes + ", " : ""}${
-                paradigm !== "oop" ? newRouterInstance : newRoutesInstance
-              }`
-            );
+            if (paradigm === "oop") {
+              fileContents = fileContent.replace(
+                existingRoutes,
+                `${
+                  existingRoutes.length > 0 ? existingRoutes + ", " : ""
+                }${newRouterInstance}`
+              );
+            } else {
+              fileContents = fileContent.replace(
+                `[${existingRoutes}]`,
+                `[${
+                  existingRoutes.length > 0 ? existingRoutes + ", " : ""
+                }${newRoutesInstance}]`
+              );
+            }
 
             const updatedContents = `${importStatement}\n${fileContents}`;
 
@@ -137,16 +149,26 @@ export const addRoutesIndexFile = (routesName: string, readConfig: any) => {
           const routesArrayMatch = fileContent.match(
             /const routes = \[([\s\S]+?)\];/
           );
-
           if (routesArrayMatch) {
             const existingRoutes = routesArrayMatch[1].trim();
 
-            const fileContents = fileContent.replace(
-              existingRoutes,
-              `${existingRoutes.length > 0 ? existingRoutes + ", " : ""}${
-                paradigm !== "oop" ? newRouterInstance : newRoutesInstance
-              }`
-            );
+            let fileContents: any;
+
+            if (paradigm === "oop") {
+              fileContents = fileContent.replace(
+                existingRoutes,
+                `${
+                  existingRoutes.length > 0 ? existingRoutes + ", " : ""
+                }${newRouterInstance}`
+              );
+            } else {
+              fileContents = fileContent.replace(
+                `[${existingRoutes}]`,
+                `[${
+                  existingRoutes.length > 0 ? existingRoutes + ", " : ""
+                }${newRoutesInstance}]`
+              );
+            }
 
             const updatedContents = `${importStatement}\n${fileContents}`;
             writeFileSync(indexPath, updatedContents);
@@ -172,7 +194,11 @@ export const addRoutesIndexFile = (routesName: string, readConfig: any) => {
     console.log(
       colors.bold(
         colors.green(
-          `added ${capitalizedString}Router to routes array in index.${extension} file`
+          `added ${
+            paradigm === "oop"
+              ? `${capitalizedString}Router`
+              : `${routesName}Routes`
+          } to routes array in index.${extension} file`
         )
       )
     );
