@@ -28,6 +28,10 @@ export const packageGenerator = () => {
       "-m, --models" + colors.bold(colors.blue("<name>")),
       "Generates a dolphjs models file."
     )
+    .option(
+      "-a, --all" + colors.bold(colors.blue("<name>")),
+      "Generates dolphjs ocntrollers, routes, models and services files for the name paramter."
+    )
     // .option(
     //   "-in, --interfaces" + colors.bold(colors.blue("<name>")),
     //   "Generates a dolphjs interfaces file."
@@ -38,21 +42,40 @@ export const packageGenerator = () => {
     // )
     .action(async (name: any, options: any) => {
       Object.entries(name).forEach(([key, value]) => {
+        // generates controller files for the paramter name
         if (key && key.toLowerCase().includes("controller") && value) {
           controllerGen.generateController(value.toString());
         }
+
+        // generates service files for the paramter name
         if (key && key.toLowerCase().includes("service") && value) {
           serviceGen.generateService(value.toString());
         }
+
+        // generatess routes files for the paramter name
         if (key && key.toLowerCase().includes("routes") && value) {
           routesGen.generateRouter(value.toString());
           addRoutesIndexFile(value.toString(), readConfig);
         }
+
+        // generatess model fles for the paramter name
         if (key && key.toLowerCase().includes("models") && value) {
           modelGen.generateModel(value.toString());
           if (readConfig().database === "mysql") {
             mysqlGen.generateConfig(value.toString());
           }
+        }
+
+        // generates files for all the above options
+        if (key && key.toLowerCase().includes("all") && value) {
+          modelGen.generateModel(value.toString());
+          if (readConfig().database === "mysql") {
+            mysqlGen.generateConfig(value.toString());
+          }
+          serviceGen.generateService(value.toString());
+          controllerGen.generateController(value.toString());
+          routesGen.generateRouter(value.toString());
+          addRoutesIndexFile(value.toString(), readConfig);
         }
       });
 
