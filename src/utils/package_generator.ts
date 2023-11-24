@@ -7,6 +7,7 @@ import * as modelGen from "../generators/generate_model.js";
 import * as mysqlGen from "../generators/generate_mysql.js";
 import { readConfig } from "./read_user_config_path.js";
 import { addRoutesIndexFile } from "../registers/register_routes.js";
+import { addServerFile } from "../registers/server_file_routes.js";
 
 export const packageGenerator = () => {
   program
@@ -76,6 +77,7 @@ export const packageGenerator = () => {
           controllerGen.generateController(value.toString());
           routesGen.generateRouter(value.toString());
           addRoutesIndexFile(value.toString(), readConfig);
+          addServerFile(readConfig);
         }
       });
 
