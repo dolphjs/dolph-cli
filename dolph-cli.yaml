@@ -1,4 +1,4 @@
 language: ts
-paradigm: oop
+paradigm: functional
 database: mongo
 generateFolder: true
