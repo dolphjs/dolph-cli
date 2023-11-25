@@ -1,5 +1,5 @@
 // import { readConfig } from "utils/read_user_config_path.js";
-import * as generateServiceTemplate from "./../templates/service_template.js";
+import * as generateServiceTemplate from "../templates/service_template.js";
 
 export const resolveServiceContent = (readConfig: any, serviceName: string) => {
   if (readConfig().language === "js" && readConfig().paradigm === "oop") {

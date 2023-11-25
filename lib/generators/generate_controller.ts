@@ -67,10 +67,7 @@ export const generateController = async (name: string) => {
     controllerDir = findControllerDirectory();
   }
 
-  const controllerDirName =
-    readConfig().generateFolder === "true" || true
-      ? path.join(controllerDir, name)
-      : controllerDir;
+  const controllerDirName = path.join(controllerDir, name);
 
   const controllerFilePath = path.join(
     controllerDirName + `/${name}.controller.${readConfig().language}`

@@ -47,6 +47,10 @@ export const ${capitalizeFirstLetter(
 });
 `;
   }
+
+  if (!isMongo && !isMysql) {
+    template = ``;
+  }
   return template;
 };
 
@@ -94,6 +98,9 @@ const User = sequelizeInstance.define("user", {
 
 module.exports = { ${capitalizeFirstLetter(modelName)} };
 `;
+  }
+  if (!isMongo && !isMysql) {
+    template = ``;
   }
   return template;
 };
@@ -146,6 +153,9 @@ export const ${capitalizeFirstLetter(
 });
 `;
   }
+  if (!isMongo && !isMysql) {
+    template = ``;
+  }
   return template;
 };
 
@@ -192,6 +202,9 @@ const User = sequelizeInstance.define("user", {
 
 module.exports = { ${capitalizeFirstLetter(modelName)} };
 `;
+  }
+  if (!isMongo && !isMysql) {
+    template = ``;
   }
   return template;
 };

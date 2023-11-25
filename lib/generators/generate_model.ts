@@ -60,10 +60,7 @@ export const generateModel = async (name: string) => {
     modelDir = findModelDirectory();
   }
 
-  const modelDirName =
-    readConfig().generateFolder === "true" || true
-      ? path.join(modelDir, name)
-      : modelDir;
+  const modelDirName = path.join(modelDir, name);
 
   const modelFilePath = path.join(
     modelDirName + `/${name}.model.${readConfig().language}`
@@ -71,9 +68,7 @@ export const generateModel = async (name: string) => {
 
   try {
     // Create the generate controller path
-    if (readConfig().generateFolder === "true" || true) {
-      mkdirSync(modelDirName);
-    }
+    mkdirSync(modelDirName);
 
     //TODO: if no index.ts file, create one too
 

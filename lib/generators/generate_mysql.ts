@@ -61,10 +61,7 @@ export const generateConfig = async (name: string) => {
     configDir = findConfigDirectory();
   }
 
-  const configDirName =
-    readConfig().generateFolder === "true" || true
-      ? path.join(configDir, name)
-      : configDir;
+  const configDirName = configDir;
 
   const configFilePath = path.join(
     configDirName + `/db.configs.${readConfig().language}`
@@ -72,9 +69,9 @@ export const generateConfig = async (name: string) => {
 
   try {
     // Create the generate controller path
-    if (readConfig().generateFolder === "true" || true) {
-      mkdirSync(configDirName);
-    }
+    // if (readConfig().generateFolder === "true" || true) {
+    //   mkdirSync(configDirName);
+    // }
 
     //TODO: if no index.ts file, create one too
 

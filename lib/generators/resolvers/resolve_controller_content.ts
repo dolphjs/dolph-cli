@@ -1,5 +1,5 @@
 // import { readConfig } from "utils/read_user_config_path.js";
-import * as generateControllerTemplate from "./../templates/controller_template.js";
+import * as generateControllerTemplate from "../templates/controller_template.js";
 
 export const resolveControllerContent = (
   readConfig: any,

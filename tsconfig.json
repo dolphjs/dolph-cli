@@ -33,7 +33,7 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "useDefineForClassFields": true,
-    "baseUrl": "./src",
+    "baseUrl": "./lib",
     "outDir": "./dist"
   },
   "include": ["**/*.ts"]

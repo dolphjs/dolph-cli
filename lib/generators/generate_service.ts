@@ -64,10 +64,7 @@ export const generateService = async (name: string) => {
     serviceDir = findServiceDirectory();
   }
 
-  const serviceDirName =
-    readConfig().generateFolder === "true" || true
-      ? path.join(serviceDir, name)
-      : serviceDir;
+  const serviceDirName = path.join(serviceDir, name);
 
   const serviceFilePath = path.join(
     serviceDirName + `/${name}.service.${readConfig().language}`

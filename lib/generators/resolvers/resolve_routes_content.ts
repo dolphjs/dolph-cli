@@ -1,5 +1,5 @@
 // import { readConfig } from "utils/read_user_config_path.js";
-import * as generateRoutesTemplate from "./../templates/routes_template.js";
+import * as generateRoutesTemplate from "../templates/routes_template.js";
 
 export const resolveRoutesContent = (readConfig: any, routerName: string) => {
   if (readConfig().language === "js" && readConfig().paradigm === "oop") {

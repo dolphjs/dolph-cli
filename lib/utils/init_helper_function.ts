@@ -4,20 +4,30 @@ import path from "path";
 import yaml from "js-yaml";
 import colors from "colors";
 import { DefaultConfig } from "../types/config.js";
+import { writeSwcrc } from "./write_swrcc.js";
+import { writeTsConfigFile } from "./write_tsconfig.js";
+import { writeDolphConfig } from "./write_dolph_config.js";
+import { writePackageJsonFile } from "./write_package_json.js";
+import { writeGitignore } from "./write_gitignore.js";
 
 export const initDolphCli = () => {
   const configFolderPath = path.join(process.cwd());
+  const srcPath = path.join(configFolderPath, "src");
   const userConfigFilePath = path.join(configFolderPath, "dolph-cli.yaml");
 
   if (!existsSync(configFolderPath)) {
     mkdirSync(configFolderPath);
   }
 
+  if (!existsSync(srcPath)) {
+    mkdirSync(srcPath);
+  }
+
   const defaultConfig: DefaultConfig = {
     language: "ts",
-    generateFolder: true,
     paradigm: "oop",
     database: "mongo",
+    generateFolder: true,
   };
 
   if (!existsSync(userConfigFilePath)) {
@@ -45,14 +55,14 @@ export const initDolphCli = () => {
           choices: ["mongo", "mysql", "postgresql", "other"],
           default: "mongo",
         },
-        {
-          type: "list",
-          name: "generateFolder",
-          message:
-            "Generate folder and files for the Services, Models, Controllers and Routes",
-          choices: ["true", "false"],
-          default: "true",
-        },
+        // {
+        //   type: "list",
+        //   name: "generateFolder",
+        //   message:
+        //     "Generate folder and files for the Services, Models, Controllers and Routes",
+        //   choices: ["true", "false"],
+        //   default: "true",
+        // },
       ])
       .then((replies) => {
         const userConfig = { ...defaultConfig, ...replies };
@@ -61,10 +71,19 @@ export const initDolphCli = () => {
 
         writeFileSync(userConfigFilePath, yamlString, "utf8");
 
+        if (userConfig.language === "ts") {
+          writeSwcrc();
+          writeTsConfigFile();
+        }
+
+        writeDolphConfig();
+        writePackageJsonFile("server", userConfig.language);
+        writeGitignore();
+
         console.log(
           colors.green(
             colors.bold(
-              "Dolph CLI configurations have been intialized successfully 😎."
+              "dolph cli configurations have been intialized successfully 😎."
             )
           )
         );
@@ -73,7 +92,7 @@ export const initDolphCli = () => {
     console.log(
       colors.bold(
         colors.cyan(
-          "I see you already have your Dolph CLI configurations present 😉."
+          "I see you already have your dolph cli configurations present 😉."
         )
       )
     );

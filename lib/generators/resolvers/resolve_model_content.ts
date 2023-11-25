@@ -1,6 +1,6 @@
 // import { readConfig } from "utils/read_user_config_path.js";
-import * as generateModelTemplate from "./../templates/model_template.js";
-import * as generateMySqlTemplate from "./../templates/mysql_config_template.js";
+import * as generateModelTemplate from "../templates/model_template.js";
+import * as generateMySqlTemplate from "../templates/mysql_config_template.js";
 
 export const resolveModelContent = (readConfig: any, modelName: string) => {
   if (readConfig().language === "js" && readConfig().paradigm === "oop") {
