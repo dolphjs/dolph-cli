@@ -3,8 +3,7 @@ import { getRootDirectory } from "./get_root_dir_path.js";
 import { join } from "path";
 
 export function writeSwcrc(): void {
-  const swcrcContent = `
-{
+  const swcrcContent = `{
   "jsc": {
     "parser": {
       "syntax": "typescript",
@@ -27,17 +26,17 @@ export function writeSwcrc(): void {
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"],
-      "@configs/*": ["configs/*"],
-      "@controllers/*": ["controllers/*"],
-      "@dtos/*": ["dtos/*"],
-      "@interfaces/*": ["interfaces/*"],
-      "@middlewares/*": ["middlewares/*"],
-      "@models/*": ["models/*"],
-      "@routes/*": ["routes/*"],
-      "@services/*": ["services/*"],
-      "@utils/*": ["utils/*"],
-      "@constants/*": ["constants/*"],
-      "@validations/*": ["validations/*"]
+      "@/configs/*": ["configs/*"],
+      "@/controllers/*": ["controllers/*"],
+      "@/dtos/*": ["dtos/*"],
+      "@/interfaces/*": ["interfaces/*"],
+      "@/middlewares/*": ["middlewares/*"],
+      "@/models/*": ["models/*"],
+      "@/routes/*": ["routes/*"],
+      "@/services/*": ["services/*"],
+      "@/utils/*": ["utils/*"],
+      "@/constants/*": ["constants/*"],
+      "@/validations/*": ["validations/*"]
     }
   },
   "module": {
