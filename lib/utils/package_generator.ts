@@ -41,7 +41,7 @@ export const packageGenerator = () => {
     //   "-hp, --helper" + colors.bold(colors.blue("<name>")),
     //   "Generates a dolphjs helper file."
     // )
-    .action(async (name: any, options: any) => {
+    .action(async (name: any, _options: any) => {
       Object.entries(name).forEach(([key, value]) => {
         // generates controller files for the paramter name
         if (key && key.toLowerCase().includes("controller") && value) {

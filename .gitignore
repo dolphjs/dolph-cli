@@ -3,3 +3,4 @@ logs
 yarn-error.log
 dist
 src
+.env

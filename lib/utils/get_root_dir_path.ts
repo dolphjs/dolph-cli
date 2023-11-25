@@ -1,6 +1,12 @@
 import path from "path";
+import { config } from "dotenv";
+config();
 
 export const getRootDirectory = () => {
-  const projectRoot = path.join(process.cwd());
+  let projectRoot: string;
+  projectRoot =
+    process.env.mode === "dev"
+      ? path.join(process.cwd(), "src")
+      : path.join(process.cwd());
   return projectRoot;
 };
