@@ -60,10 +60,7 @@ export const generateRouter = async (name: string) => {
     routesDir = findRoutesDirectory();
   }
 
-  const routesDirName =
-    readConfig().generateFolder === "true" || true
-      ? path.join(routesDir, name)
-      : routesDir;
+  const routesDirName = path.join(routesDir, name);
 
   const routesFilePath = path.join(
     routesDirName + `/${name}.routes.${readConfig().language}`
