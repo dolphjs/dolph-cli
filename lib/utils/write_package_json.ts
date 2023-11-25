@@ -5,8 +5,7 @@ import { getRootDirectory } from "./get_root_dir_path.js";
 export function writePackageJsonFile(name: string, extension: string): void {
   const packageJsonContent =
     extension === "ts"
-      ? `
-{
+      ? `{
   "name": "${name}",
   "version": "1.0.0",
   "main": "app/server.js",
@@ -41,8 +40,7 @@ export function writePackageJsonFile(name: string, extension: string): void {
   }
 }
 `
-      : `
-{
+      : `{
   "name": "${name}",
   "version": "1.0.0",
   "main": "src/server.js",

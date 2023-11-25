@@ -3,8 +3,7 @@ import { getRootDirectory } from "./get_root_dir_path.js";
 import { join } from "path";
 
 export function writeGitignore(): void {
-  const gitignoreContent = `
-node_modules
+  const gitignoreContent = `node_modules
 .env
 logs
 yarn-error.log
