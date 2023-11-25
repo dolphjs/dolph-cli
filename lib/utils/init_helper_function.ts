@@ -83,7 +83,7 @@ export const initDolphCli = () => {
         console.log(
           colors.green(
             colors.bold(
-              "dolph cli configurations have been intialized successfully 😎."
+              "dolph cli configurations have been initialized successfully 😎."
             )
           )
         );
@@ -91,7 +91,7 @@ export const initDolphCli = () => {
         console.log(
           colors.green(
             colors.bold(
-              "run yarn install to install dependencies in project directory."
+              "run yarn install to install dependencies in project directory and start coding 😉."
             )
           )
         );
