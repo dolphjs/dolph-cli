@@ -7,6 +7,7 @@ import { packageDescription } from "./utils/package_description.js";
 import { configurePackage } from "./utils/read_user_config.js";
 import { InitDolphCli } from "./utils/package_init.js";
 import { packageGenerator } from "./utils/package_generator.js";
+import { dolphTail } from "utils/commands/dolph_tail.js";
 
 figlet.text(
   "dolphjs cli",
@@ -28,7 +29,8 @@ figlet.text(
     packageDescription();
     configurePackage();
     packageGenerator();
-
+    dolphTail('');//aded a qoute to server as file path
     program.parse(process.argv);
   }
 );
+//TODO: add a command to start the server
