@@ -87,6 +87,14 @@ export const initDolphCli = () => {
             )
           )
         );
+
+        console.log(
+          colors.green(
+            colors.bold(
+              "run yarn install to install dependencies in project directory."
+            )
+          )
+        );
       });
   } else {
     console.log(
