@@ -4,17 +4,28 @@ import colors from "colors";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveModelContent } from "./resolvers/resolve_model_content.js";
 
+const createModelDirectory = () => {
+  const projectRoot = path.join(process.cwd());
+  const userModelFilePath = path.join(projectRoot, "/src/models");
+
+  if (!existsSync(userModelFilePath)) {
+    mkdirSync(userModelFilePath);
+  }
+};
+
+// removed other possible dirs to enforce dolphjs style guide
+
 const findModelDirectory = () => {
   const rootDir = process.cwd();
   const possibleDirs = [
     "/src/models",
-    "/src/Models",
-    "/src/model",
-    "/src/Model",
-    "/Models",
-    "/Model",
-    "/models",
-    "/model",
+    // "/src/Models",
+    // "/src/model",
+    // "/src/Model",
+    // "/Models",
+    // "/Model",
+    // "/models",
+    // "/model",
   ];
 
   const modelDir = possibleDirs.find((dir) =>
@@ -38,13 +49,15 @@ export const generateModelFile = async (
 export const generateModel = async (name: string) => {
   if (!name) colors.bold(colors.red("Model extension or name is required! 🤨"));
 
-  const modelDir = findModelDirectory();
+  let modelDir = findModelDirectory();
 
   if (!modelDir) {
     //TODO: create one if it doesn't exist
 
-    console.log(colors.bold(colors.red("Model directory doesn't exist 🤨")));
-    return;
+    // console.log(colors.bold(colors.red("Model directory doesn't exist 🤨")));
+    // return;
+    createModelDirectory();
+    modelDir = findModelDirectory();
   }
 
   const modelDirName =

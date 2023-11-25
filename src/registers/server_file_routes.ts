@@ -2,9 +2,13 @@ import colors from "colors";
 import { existsSync, writeFileSync } from "fs";
 import path from "path";
 
+// removed other possible dirs to enforce dolphjs style guide
 const findBaseDirectory = () => {
   const rootDir = process.cwd();
-  const possibleDirs = ["/src", "/"];
+  const possibleDirs = [
+    "/src",
+    //  "/"
+  ];
 
   const routesDir = possibleDirs.find((dir) =>
     existsSync(path.join(rootDir, dir))

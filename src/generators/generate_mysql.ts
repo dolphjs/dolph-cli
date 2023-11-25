@@ -4,17 +4,28 @@ import colors from "colors";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveMySqlContent } from "./resolvers/resolve_model_content.js";
 
+const createConfigDirectory = () => {
+  const projectRoot = path.join(process.cwd());
+  const userConfigFilePath = path.join(projectRoot, "/src/configs");
+
+  if (!existsSync(userConfigFilePath)) {
+    mkdirSync(userConfigFilePath);
+  }
+};
+
+// removed other possible dirs to enforce dolphjs style guide
+
 const findConfigDirectory = () => {
   const rootDir = process.cwd();
   const possibleDirs = [
-    "/src/Configs",
-    "/src/Config",
+    // "/src/Configs",
+    // "/src/Config",
     "/src/configs",
-    "/src/config",
-    "/Configs",
-    "/configs",
-    "/config",
-    "/Config",
+    // "/src/config",
+    // "/Configs",
+    // "/configs",
+    // "/config",
+    // "/Config",
   ];
 
   const configDir = possibleDirs.find((dir) =>
@@ -39,13 +50,15 @@ export const generateConfig = async (name: string) => {
   if (!name)
     colors.bold(colors.red("Config extension or name is required! 🤨"));
 
-  const configDir = findConfigDirectory();
+  let configDir = findConfigDirectory();
 
   if (!configDir) {
     //TODO: create one if it doesn't exist
 
-    console.log(colors.bold(colors.red("Config directory doesn't exist 🤨")));
-    return;
+    // console.log(colors.bold(colors.red("Config directory doesn't exist 🤨")));
+    // return;
+    createConfigDirectory();
+    configDir = findConfigDirectory();
   }
 
   const configDirName =

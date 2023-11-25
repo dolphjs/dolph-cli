@@ -2,17 +2,19 @@ import colors from "colors";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 
+// removed other possible dirs to enforce dolphjs style guide
+
 const findRoutesDirectory = () => {
   const rootDir = process.cwd();
   const possibleDirs = [
     "/src/routes",
-    "/src/Routes",
-    "/src/route",
-    "/src/Route",
-    "/Routes",
-    "/Route",
-    "/routes",
-    "/route",
+    // "/src/Routes",
+    // "/src/route",
+    // "/src/Route",
+    // "/Routes",
+    // "/Route",
+    // "/routes",
+    // "/route",
   ];
 
   const routesDir = possibleDirs.find((dir) =>

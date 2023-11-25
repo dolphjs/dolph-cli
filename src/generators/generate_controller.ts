@@ -4,17 +4,27 @@ import colors from "colors";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveControllerContent } from "./resolvers/resolve_controller_content.js";
 
+const createControllerDirectory = () => {
+  const projectRoot = path.join(process.cwd());
+  const userControllerFilePath = path.join(projectRoot, "/src/controllers");
+
+  if (!existsSync(userControllerFilePath)) {
+    mkdirSync(userControllerFilePath);
+  }
+};
+
+// removed other possible dirs to enforce dolphjs style guide
 const findControllerDirectory = () => {
   const rootDir = process.cwd();
   const possibleDirs = [
     "/src/controllers",
-    "/src/Controllers",
-    "/src/controller",
-    "/src/Controller",
-    "/Controller",
-    "/Controllers",
-    "/controllers",
-    "/controller",
+    // "/src/Controllers",
+    // "/src/controller",
+    // "/src/Controller",
+    // "/Controller",
+    // "/Controllers",
+    // "/controllers",
+    // "/controller",
   ];
 
   const controllerDir = possibleDirs.find((dir) =>
@@ -43,15 +53,18 @@ export const generateController = async (name: string) => {
   if (!name)
     colors.bold(colors.red("Controller extension or name is required! 🤨"));
 
-  const controllerDir = findControllerDirectory();
+  let controllerDir = findControllerDirectory();
 
   if (!controllerDir) {
     //TODO: create one if it doesn't exist
 
-    console.log(
-      colors.bold(colors.red("controller directory doesn't exist 🤨"))
-    );
-    return;
+    // console.log(
+    //   colors.bold(colors.red("controller directory doesn't exist 🤨"))
+    // );
+    // return;
+
+    createControllerDirectory();
+    controllerDir = findControllerDirectory();
   }
 
   const controllerDirName =

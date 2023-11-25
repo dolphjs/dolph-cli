@@ -4,9 +4,24 @@ import colors from "colors";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveRoutesContent } from "./resolvers/resolve_routes_content.js";
 
+const createRoutesDirectory = () => {
+  const projectRoot = path.join(process.cwd());
+  const userRoutesFilePath = path.join(projectRoot, "/src/routes");
+
+  if (!existsSync(userRoutesFilePath)) {
+    mkdirSync(userRoutesFilePath);
+  }
+};
+
+// removed other possible dirs to enforce dolphjs style guide
 const findRoutesDirectory = () => {
   const rootDir = process.cwd();
-  const possibleDirs = ["/src/routes", "/src/Routes", "/Routes", "/routes"];
+  const possibleDirs = [
+    "/src/routes",
+    // "/src/Routes",
+    // "/Routes",
+    // "/routes"
+  ];
 
   const routesDir = possibleDirs.find((dir) =>
     existsSync(path.join(rootDir, dir))
@@ -34,13 +49,15 @@ export const generateRouter = async (name: string) => {
   if (!name)
     colors.bold(colors.red("Routes extension or name is required! 🤨"));
 
-  const routesDir = findRoutesDirectory();
+  let routesDir = findRoutesDirectory();
 
   if (!routesDir) {
     //TODO: create one if it doesn't exist
 
-    console.log(colors.bold(colors.red("routes directory doesn't exist 🤨")));
-    return;
+    // console.log(colors.bold(colors.red("routes directory doesn't exist 🤨")));
+    // return;
+    createRoutesDirectory();
+    routesDir = findRoutesDirectory();
   }
 
   const routesDirName =

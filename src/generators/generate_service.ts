@@ -4,17 +4,27 @@ import colors from "colors";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveServiceContent } from "./resolvers/resolve_service_content.js";
 
+const createServiceDirectory = () => {
+  const projectRoot = path.join(process.cwd());
+  const userServiceFilePath = path.join(projectRoot, "/src/services");
+
+  if (!existsSync(userServiceFilePath)) {
+    mkdirSync(userServiceFilePath);
+  }
+};
+
+// removed other possible dirs to enforce dolphjs style guide
 const findServiceDirectory = () => {
   const rootDir = process.cwd();
   const possibleDirs = [
     "/src/services",
-    "/src/Services",
-    "/src/service",
-    "/src/Services",
-    "/Service",
-    "/Services",
-    "/services",
-    "/service",
+    // "/src/Services",
+    // "/src/service",
+    // "/src/Services",
+    // "/Service",
+    // "/Services",
+    // "/services",
+    // "/service",
   ];
 
   const serviceDir = possibleDirs.find((dir) =>
@@ -43,13 +53,15 @@ export const generateService = async (name: string) => {
   if (!name)
     colors.bold(colors.red("Service extension or name is required! 🤨"));
 
-  const serviceDir = findServiceDirectory();
+  let serviceDir = findServiceDirectory();
 
   if (!serviceDir) {
     //TODO: create one if it doesn't exist
 
-    console.log(colors.bold(colors.red("Service directory doesn't exist 🤨")));
-    return;
+    // console.log(colors.bold(colors.red("Service directory doesn't exist 🤨")));
+    // return;
+    createServiceDirectory();
+    serviceDir = findServiceDirectory();
   }
 
   const serviceDirName =
