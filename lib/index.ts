@@ -10,13 +10,12 @@ import { packageGenerator } from "./utils/package_generator.js";
 import { dolphTail } from "utils/commands/dolph_tail.js";
 
 figlet.text(
-  "dolphjs cli",
+  "DolphJs cli",
   {
-    font: "Big",
     horizontalLayout: "default",
     verticalLayout: "default",
-    width: 150,
-    whitespaceBreak: true,
+    width: 50,
+    whitespaceBreak: false,
   },
   function (err: any, data: any) {
     if (err) {
@@ -24,12 +23,12 @@ figlet.text(
       return;
     }
 
-    console.log(colors.bold(colors.rainbow(data)));
+    console.log(colors.bold(colors.green(data)));
     InitDolphCli();
     packageDescription();
     configurePackage();
     packageGenerator();
-    dolphTail('');//aded a qoute to server as file path
+    //dolphTail('');//aded a qoute to server as file path
     program.parse(process.argv);
   }
 );
