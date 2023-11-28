@@ -3,10 +3,10 @@ import { initDolphCli } from "./init_helper_function.js";
 
 export const InitDolphCli = () => {
   program
-    .command("takeover")
-    .alias("tr")
-    .description("Creates default config files")
-    .action(() => {
-      initDolphCli();
+    .command("new <app-name>")
+    .alias("nw")
+    .description("Creates a new dolphjs app")
+    .action((appname) => {
+      initDolphCli(appname);
     });
 };

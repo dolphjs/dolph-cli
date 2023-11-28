@@ -10,7 +10,25 @@ import { writeDolphConfig } from "./write_dolph_config.js";
 import { writePackageJsonFile } from "./write_package_json.js";
 import { writeGitignore } from "./write_gitignore.js";
 
-export const initDolphCli = () => {
+export const initDolphCli = (appname: string) => {
+  if (appname.length === 0) {
+    console.log(
+      colors.red(
+        colors.bold(
+          "Provide a name for you project or indicate with a '.' to use current directory "
+        )
+      )
+    );
+    return;
+  }
+
+  if (appname !== ".") {
+    // const currentDirName = process.cwd().split("/").pop();
+    // projectName = currentDirName;
+    mkdirSync(appname);
+    process.chdir(appname);
+  }
+
   const configFolderPath = path.join(process.cwd());
   const srcPath = path.join(configFolderPath, "src");
   const userConfigFilePath = path.join(configFolderPath, "dolph-cli.yaml");
