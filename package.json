@@ -47,7 +47,6 @@
     "rimraf": "^5.0.5"
   },
   "devDependencies": {
-    "@types/colors": "^1.2.1",
     "@types/figlet": "^1.5.8",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.9.1",
