@@ -10,7 +10,6 @@
     "lint": "eslint .",
     "check-lint": "eslint [0-9]*.ts",
     "clean": "rimraf ./dist",
-    "rm:test": "rm -r controllers/user/ && rm -r services/user && rm -r routes/user && rm -r models/user && rm -r configs/user",
     "build": "tsc ./lib/index.ts --esModuleInterop true --target ES2020 --module nodenext --moduleResolution nodenext --outDir dist",
     "start": "npm run clean && npm run build  && node ./dist/index.js",
     "dev": "ts-node ./lib/index.ts",
@@ -37,7 +36,7 @@
   ],
   "bin": {
     "dolph-cli": "./dist/index.js",
-    "rg": "./dist/index.js"
+    "dc": "./dist/index.js"
   },
   "dependencies": {
     "chalk": "^5.3.0",
