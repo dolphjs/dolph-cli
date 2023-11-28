@@ -1,4 +1,0 @@
-language: ts
-paradigm: oop
-database: mongo
-generateFolder: true

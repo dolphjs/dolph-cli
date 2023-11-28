@@ -1,5 +1,5 @@
 import { program } from "commander";
-import colors from "colors";
+import chalk from "chalk";
 import * as controllerGen from "../generators/generate_controller.js";
 import * as serviceGen from "../generators/generate_service.js";
 import * as routesGen from "../generators/generate_routes.js";
@@ -14,31 +14,31 @@ export const packageGenerator = () => {
     .command("generate")
     .alias("g")
     .option(
-      "-s, --service" + colors.bold(colors.blue("<name>")),
+      "-s, --service" + chalk.bold(chalk.blue("<name>")),
       "Generates a dolphjs service file."
     )
     .option(
-      "-c, --controller" + colors.bold(colors.blue("<name>")),
+      "-c, --controller" + chalk.bold(chalk.blue("<name>")),
       "Generates a dolphjs controller file."
     )
     .option(
-      "-r, --routes" + colors.bold(colors.blue("<name>")),
+      "-r, --routes" + chalk.bold(chalk.blue("<name>")),
       "Generates a dolphjs routes file."
     )
     .option(
-      "-m, --models" + colors.bold(colors.blue("<name>")),
+      "-m, --models" + chalk.bold(chalk.blue("<name>")),
       "Generates a dolphjs models file."
     )
     .option(
-      "-a, --all" + colors.bold(colors.blue("<name>")),
+      "-a, --all" + chalk.bold(chalk.blue("<name>")),
       "Generates dolphjs ocntrollers, routes, models and services files for the name paramter."
     )
     // .option(
-    //   "-in, --interfaces" + colors.bold(colors.blue("<name>")),
+    //   "-in, --interfaces" + chalk.bold(chalk.blue("<name>")),
     //   "Generates a dolphjs interfaces file."
     // )
     // .option(
-    //   "-hp, --helper" + colors.bold(colors.blue("<name>")),
+    //   "-hp, --helper" + chalk.bold(chalk.blue("<name>")),
     //   "Generates a dolphjs helper file."
     // )
     .action(async (name: any, _options: any) => {

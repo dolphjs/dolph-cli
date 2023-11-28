@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, writeFile } from "fs";
 import path from "path";
-import colors from "colors";
+import chalk from "chalk";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveRoutesContent } from "./resolvers/resolve_routes_content.js";
 
@@ -39,22 +39,21 @@ export const generateRoutesFile = async (
     resolveRoutesContent(readConfig, name),
     (error) => {
       if (error) {
-        console.log(colors.bold(colors.red(error.toString())));
+        console.log(chalk.bold(chalk.red(error.toString())));
       }
     }
   );
 };
 
 export const generateRouter = async (name: string) => {
-  if (!name)
-    colors.bold(colors.red("Routes extension or name is required! 🤨"));
+  if (!name) chalk.bold(chalk.red("Routes extension or name is required! 🤨"));
 
   let routesDir = findRoutesDirectory();
 
   if (!routesDir) {
     //TODO: create one if it doesn't exist
 
-    // console.log(colors.bold(colors.red("routes directory doesn't exist 🤨")));
+    // console.log(chalk.bold(chalk.red("routes directory doesn't exist 🤨")));
     // return;
     createRoutesDirectory();
     routesDir = findRoutesDirectory();
@@ -81,12 +80,12 @@ export const generateRouter = async (name: string) => {
       // routesDirName,
     );
   } catch (e: any) {
-    console.log(colors.bold(colors.red(e)));
+    console.log(chalk.bold(chalk.red(e)));
   }
 
   console.log(
-    `${colors.bold(
-      colors.green(
+    `${chalk.bold(
+      chalk.green(
         `${name}.routes.${readConfig().language} generated successfully! 🙃`
       )
     )}`

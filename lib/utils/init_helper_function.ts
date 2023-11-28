@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, writeFileSync } from "fs";
 import inquirer from "inquirer";
 import path from "path";
 import yaml from "js-yaml";
-import colors from "colors";
+import chalk from "chalk";
 import { DefaultConfig } from "../types/config.js";
 import { writeSwcrc } from "./write_swrcc.js";
 import { writeTsConfigFile } from "./write_tsconfig.js";
@@ -14,8 +14,8 @@ export const initDolphCli = (appname: string) => {
   let projectName = appname;
   if (appname.length === 0) {
     console.log(
-      colors.red(
-        colors.bold(
+      chalk.red(
+        chalk.bold(
           "Provide a name for you project or indicate with a '.' to use current directory "
         )
       )
@@ -100,16 +100,16 @@ export const initDolphCli = (appname: string) => {
         writeGitignore();
 
         console.log(
-          colors.green(
-            colors.bold(
+          chalk.green(
+            chalk.bold(
               "dolph cli configurations have been initialized successfully 😎."
             )
           )
         );
 
         console.log(
-          colors.green(
-            colors.bold(
+          chalk.green(
+            chalk.bold(
               "run yarn install to install dependencies in project directory and start coding 😉."
             )
           )
@@ -117,8 +117,8 @@ export const initDolphCli = (appname: string) => {
       });
   } else {
     console.log(
-      colors.bold(
-        colors.cyan(
+      chalk.bold(
+        chalk.cyan(
           "I see you already have your dolph cli configurations present 😉."
         )
       )
