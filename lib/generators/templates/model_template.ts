@@ -9,8 +9,7 @@ const generateOopTsTemplate = (
   };
 
   if (isMongo) {
-    template = `
-import { Schema, Document, model } from "mongoose";
+    template = `import { Schema, Document, model } from "mongoose";
 
 export interface I${capitalizeFirstLetter(modelName)} extends Document {
   
@@ -25,7 +24,7 @@ const ${capitalizeFirstLetter(modelName)}Schema = new Schema(
 export const ${capitalizeFirstLetter(
       modelName
     )}Model = model<I${capitalizeFirstLetter(modelName)}>("${
-      modelName.inverse.charAt(0) !== "s" ? `${modelName}s` : modelName
+      modelName.charAt(0) !== "s" ? `${modelName}s` : modelName
     }", ${capitalizeFirstLetter(modelName)}Schema);
 `;
   }
@@ -75,7 +74,7 @@ const ${capitalizeFirstLetter(modelName)}Schema = new Schema(
 );
 
 const ${capitalizeFirstLetter(modelName)}Model = model("${
-      modelName.inverse.charAt(0) !== "s" ? `${modelName}s` : modelName
+      modelName.charAt(0) !== "s" ? `${modelName}s` : modelName
     }", ${capitalizeFirstLetter(modelName)}Schema);
 
 module.exports = { ${capitalizeFirstLetter(modelName)}Model }
@@ -132,7 +131,7 @@ const ${capitalizeFirstLetter(modelName)}Schema = new Schema(
 export const ${capitalizeFirstLetter(
       modelName
     )}Model = model<I${capitalizeFirstLetter(modelName)}>("${
-      modelName.inverse.charAt(0) !== "s" ? `${modelName}s` : modelName
+      modelName.charAt(0) !== "s" ? `${modelName}s` : modelName
     }", ${capitalizeFirstLetter(modelName)}Schema);
 `;
   }
@@ -180,7 +179,7 @@ const ${capitalizeFirstLetter(modelName)}Schema = new Schema(
 );
 
 const ${capitalizeFirstLetter(modelName)}Model = model("${
-      modelName.inverse.charAt(0) !== "s" ? `${modelName}s` : modelName
+      modelName.charAt(0) !== "s" ? `${modelName}s` : modelName
     }", ${capitalizeFirstLetter(modelName)}Schema);
 
 module.exports = { ${capitalizeFirstLetter(modelName)}Model };

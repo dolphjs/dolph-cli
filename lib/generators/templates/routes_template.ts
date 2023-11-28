@@ -1,11 +1,14 @@
 const generateOopTsTemplate = (routerName: string) => {
-  let template;
   const capitalizeFirstLetter = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   const className = capitalizeFirstLetter(routerName) + "Router";
-  template = `
+  const path = `/${
+    routerName.charAt(0) === "s" ? routerName : `${routerName}s`
+  }`;
+
+  const template = `
 import { DolphRouteHandler } from "@dolphjs/dolph/classes";
 import { Dolph } from "@dolphjs/dolph/common";
 
@@ -15,30 +18,29 @@ export class ${className} extends DolphRouteHandler<Dolph> {
     this.initRoutes();
   }
 
-  public readonly path: string = "/${
-    routerName.inverse.charAt(0) === "s" ? routerName : `${routerName}s`
-  }";
+  public readonly path: string = "${path}";
   controller;
 
   initRoutes(): void {
     this.router.get();
   }
 }
-
 `;
 
   return template;
 };
 
 const generateOopJsTemplate = (routerName: string) => {
-  let template;
   const capitalizeFirstLetter = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   const className = capitalizeFirstLetter(routerName) + "Router";
+  const path = `/${
+    routerName.charAt(0) === "s" ? routerName : `${routerName}s`
+  }`;
 
-  template = `
+  const template = `
 const { DolphRouteHandler } = require("@dolphjs/dolph/classes");
 
 class ${className} extends DolphRouteHandler {
@@ -47,10 +49,7 @@ class ${className} extends DolphRouteHandler {
     this.initRoutes();
   }
 
-   path = "/${
-     routerName.inverse.charAt(0) === "s" ? routerName : `${routerName}s`
-   }";
-
+  path = "${path}";
   controller;
 
   initRoutes() {
@@ -59,47 +58,44 @@ class ${className} extends DolphRouteHandler {
 }
 
 module.exports = { ${className} };
-
 `;
 
   return template;
 };
 
 const generateFnTsTemplate = (routerName: string) => {
-  let template;
+  const path = `/${routerName}`;
 
-  template = `
+  const template = `
 import { Router } from "express";
 
 const router = Router();
 router.get();
 
 export const ${routerName}Routes = {
-  path: "/${routerName}",
+  path: "${path}",
   router,
 };
-
 `;
 
   return template;
 };
 
 const generateFnJsTemplate = (routerName: string) => {
-  let template;
+  const path = `/${routerName}`;
 
-  template = `
+  const template = `
 const { Router } = require("express");
 
 const router = Router();
 router.get();
 
 const ${routerName}Routes = {
-  path: "/${routerName}",
+  path: "${path}",
   router,
 };
 
 module.exports = { ${routerName}Routes };
-
 `;
 
   return template;
