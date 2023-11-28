@@ -11,6 +11,7 @@ import { writePackageJsonFile } from "./write_package_json.js";
 import { writeGitignore } from "./write_gitignore.js";
 
 export const initDolphCli = (appname: string) => {
+  let projectName = appname;
   if (appname.length === 0) {
     console.log(
       colors.red(
@@ -23,10 +24,10 @@ export const initDolphCli = (appname: string) => {
   }
 
   if (appname !== ".") {
-    // const currentDirName = process.cwd().split("/").pop();
-    // projectName = currentDirName;
     mkdirSync(appname);
     process.chdir(appname);
+  } else {
+    projectName = process.cwd().split("/").pop();
   }
 
   const configFolderPath = path.join(process.cwd());
@@ -95,7 +96,7 @@ export const initDolphCli = (appname: string) => {
         }
 
         writeDolphConfig();
-        writePackageJsonFile("server", userConfig.language);
+        writePackageJsonFile(projectName, userConfig.language);
         writeGitignore();
 
         console.log(
