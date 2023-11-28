@@ -1,4 +1,4 @@
-import colors from "colors";
+import chalk from "chalk";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 
@@ -40,14 +40,14 @@ export const addRoutesIndexFile = (routesName: string, readConfig: any) => {
       break;
   }
   if (!routesName)
-    colors.bold(colors.red("Routes extension or name is required! 🤨"));
+    chalk.bold(chalk.red("Routes extension or name is required! 🤨"));
 
   const routesDir = findRoutesDirectory();
 
   if (!routesDir) {
     //TODO: create one if it doesn't exist
 
-    console.log(colors.bold(colors.red("Routes directory doesn't exist 🤨")));
+    console.log(chalk.bold(chalk.red("Routes directory doesn't exist 🤨")));
     return;
   }
 
@@ -71,8 +71,8 @@ export const addRoutesIndexFile = (routesName: string, readConfig: any) => {
     }
   } else {
     console.log(
-      colors.bold(
-        colors.red("dolphjs only supports '.js' & '.ts' file extensions")
+      chalk.bold(
+        chalk.red("dolphjs only supports '.js' & '.ts' file extensions")
       )
     );
   }
@@ -194,8 +194,8 @@ module.exports  = { routes };
       }
     }
     console.log(
-      colors.bold(
-        colors.green(
+      chalk.bold(
+        chalk.green(
           `added ${
             paradigm === "oop"
               ? `${capitalizedString}Router`
@@ -205,6 +205,6 @@ module.exports  = { routes };
       )
     );
   } catch (e: any) {
-    console.log(colors.bold(colors.red(e)));
+    console.log(chalk.bold(chalk.red(e)));
   }
 };

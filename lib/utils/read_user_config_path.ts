@@ -1,4 +1,4 @@
-import colors from "colors";
+import chalk from "chalk";
 import { getUserConfigFilePath } from "./get_user_config_path.js";
 import { readFileSync } from "fs";
 import yaml from "js-yaml";
@@ -14,8 +14,8 @@ export const readConfig = () => {
   } catch (e: any) {
     console.log(e);
     console.log(
-      colors.bold(
-        colors.red(
+      chalk.bold(
+        chalk.red(
           "Error encountered reading config file, please run 'dolph-cli tr' to initialize config file 🥹"
         )
       )

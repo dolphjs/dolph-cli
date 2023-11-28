@@ -1,4 +1,4 @@
-import colors from "colors";
+import chalk from "chalk";
 import { existsSync, writeFileSync } from "fs";
 import path from "path";
 
@@ -50,8 +50,8 @@ const { autoInitMySql } = require("@dolphjs/dolph/packages");
 const { routes } = require("./routes");`;
   } else {
     console.log(
-      colors.bold(
-        colors.red("dolphjs only supports '.js' & '.ts' file extensions ")
+      chalk.bold(
+        chalk.red("dolphjs only supports '.js' & '.ts' file extensions ")
       )
     );
   }
@@ -78,11 +78,11 @@ dolph.start();`;
     }
 
     console.log(
-      colors.bold(
-        colors.green(`added server.${extension} file to base directory`)
+      chalk.bold(
+        chalk.green(`added server.${extension} file to base directory`)
       )
     );
   } catch (e: any) {
-    console.log(colors.bold(colors.red(e)));
+    console.log(chalk.bold(chalk.red(e)));
   }
 };

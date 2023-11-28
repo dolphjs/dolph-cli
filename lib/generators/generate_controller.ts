@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, writeFile } from "fs";
 import path from "path";
-import colors from "colors";
+import chalk from "chalk";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveControllerContent } from "./resolvers/resolve_controller_content.js";
 
@@ -43,7 +43,7 @@ export const generateControllerFile = async (
     resolveControllerContent(readConfig, name),
     (error) => {
       if (error) {
-        console.log(colors.bold(colors.red(error.toString())));
+        console.log(chalk.bold(chalk.red(error.toString())));
       }
     }
   );
@@ -51,7 +51,7 @@ export const generateControllerFile = async (
 
 export const generateController = async (name: string) => {
   if (!name)
-    colors.bold(colors.red("Controller extension or name is required! 🤨"));
+    chalk.bold(chalk.red("Controller extension or name is required! 🤨"));
 
   let controllerDir = findControllerDirectory();
 
@@ -59,7 +59,7 @@ export const generateController = async (name: string) => {
     //TODO: create one if it doesn't exist
 
     // console.log(
-    //   colors.bold(colors.red("controller directory doesn't exist 🤨"))
+    //   chalk.bold(chalk.red("controller directory doesn't exist 🤨"))
     // );
     // return;
 
@@ -88,12 +88,12 @@ export const generateController = async (name: string) => {
       // controllerDirName,
     );
   } catch (e: any) {
-    console.log(colors.bold(colors.red(e)));
+    console.log(chalk.bold(chalk.red(e)));
   }
 
   console.log(
-    `${colors.bold(
-      colors.green(
+    `${chalk.bold(
+      chalk.green(
         `${name}.controller.${readConfig().language} generated successfully! 🙃`
       )
     )}`

@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, writeFile } from "fs";
 import path from "path";
-import colors from "colors";
+import chalk from "chalk";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveMySqlContent } from "./resolvers/resolve_model_content.js";
 
@@ -41,21 +41,20 @@ export const generateConfigFile = async (
 ) => {
   await writeFile(configDir, resolveMySqlContent(readConfig), (error) => {
     if (error) {
-      console.log(colors.bold(colors.red(error.toString())));
+      console.log(chalk.bold(chalk.red(error.toString())));
     }
   });
 };
 
 export const generateConfig = async (name: string) => {
-  if (!name)
-    colors.bold(colors.red("Config extension or name is required! 🤨"));
+  if (!name) chalk.bold(chalk.red("Config extension or name is required! 🤨"));
 
   let configDir = findConfigDirectory();
 
   if (!configDir) {
     //TODO: create one if it doesn't exist
 
-    // console.log(colors.bold(colors.red("Config directory doesn't exist 🤨")));
+    // console.log(chalk.bold(chalk.red("Config directory doesn't exist 🤨")));
     // return;
     createConfigDirectory();
     configDir = findConfigDirectory();
@@ -82,12 +81,12 @@ export const generateConfig = async (name: string) => {
       // configDirName,
     );
   } catch (e: any) {
-    console.log(colors.bold(colors.red(e)));
+    console.log(chalk.bold(chalk.red(e)));
   }
 
   console.log(
-    `${colors.bold(
-      colors.green(
+    `${chalk.bold(
+      chalk.green(
         `db.config.${readConfig().language} generated successfully! 🙃`
       )
     )}`

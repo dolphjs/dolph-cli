@@ -1,5 +1,5 @@
 import { program } from "commander";
-import colors from "colors";
+import chalk from "chalk";
 import { readConfig } from "./read_user_config_path.js";
 import { writeConfig } from "./write_user_config.js";
 
@@ -11,19 +11,19 @@ export const configurePackage = () => {
     .alias("cf")
     .description("Set default configurations")
     .option(
-      "-l, --language" + colors.bold(colors.blue("<language>")),
+      "-l, --language" + chalk.bold(chalk.blue("<language>")),
       "Set the default coding language (ts or js)"
     )
     .option(
-      "-p, --paradigm" + colors.bold(colors.blue("<paradigm>")),
+      "-p, --paradigm" + chalk.bold(chalk.blue("<paradigm>")),
       "Set the default programming paradigm (oop or functional)"
     )
     .option(
-      "-d, --database" + colors.bold(colors.blue("<database>")),
+      "-d, --database" + chalk.bold(chalk.blue("<database>")),
       "Set the default project database (mongo, mysql, postresql or other)"
     )
     .option(
-      "-gf, --generateFolder" + colors.bold(colors.blue("<boolean>")),
+      "-gf, --generateFolder" + chalk.bold(chalk.blue("<boolean>")),
       "Generates a folder file for the Services, Models, Controllers and Routes (true or false)"
     )
     .action((options) => {
@@ -36,10 +36,10 @@ export const configurePackage = () => {
           console.log(options.language);
 
           console.log(
-            colors.red(
-              `Invalid project language, format must be either ${colors.bold(
+            chalk.red(
+              `Invalid project language, format must be either ${chalk.bold(
                 "js"
-              )} or ${colors.bold("ts")}`
+              )} or ${chalk.bold("ts")}`
             )
           );
           return;
@@ -47,8 +47,8 @@ export const configurePackage = () => {
         config.language = options.language;
         writeConfig(config);
         console.log(
-          colors.cyan(
-            `Default project language is now ${colors.bold(config.language)}`
+          chalk.cyan(
+            `Default project language is now ${chalk.bold(config.language)}`
           )
         );
         return;
@@ -58,10 +58,10 @@ export const configurePackage = () => {
       if (options.paradigm) {
         if (options.paradigm !== "oop" && options.paradigm !== "functional") {
           console.log(
-            colors.red(
-              `Invalid programming paradigm, must be either ${colors.bold(
+            chalk.red(
+              `Invalid programming paradigm, must be either ${chalk.bold(
                 "oop"
-              )} or ${colors.bold("functional")}`
+              )} or ${chalk.bold("functional")}`
             )
           );
           return;
@@ -70,10 +70,8 @@ export const configurePackage = () => {
         config.paradigm = options.paradigm;
         writeConfig(config);
         console.log(
-          colors.cyan(
-            `Default programming paradigm is now ${colors.bold(
-              config.paradigm
-            )}`
+          chalk.cyan(
+            `Default programming paradigm is now ${chalk.bold(config.paradigm)}`
           )
         );
         return;
@@ -83,7 +81,7 @@ export const configurePackage = () => {
       if (options.database) {
         if (!dbOptions.includes(options.database)) {
           console.log(
-            colors.red(
+            chalk.red(
               `Invalid database value, must be either of these: ${dbOptions.join(
                 ", "
               )} `
@@ -95,8 +93,8 @@ export const configurePackage = () => {
         config.database = options.database;
         writeConfig(config);
         console.log(
-          colors.cyan(
-            `Default project database is now ${colors.bold(config.database)}`
+          chalk.cyan(
+            `Default project database is now ${chalk.bold(config.database)}`
           )
         );
         return;
@@ -110,10 +108,10 @@ export const configurePackage = () => {
           options.generateFolder !== "false"
         ) {
           console.log(
-            colors.red(
-              `Invalid folder generation value, value must be ${colors.bold(
+            chalk.red(
+              `Invalid folder generation value, value must be ${chalk.bold(
                 "true"
-              )} or ${colors.bold("false")}`
+              )} or ${chalk.bold("false")}`
             )
           );
           return;
@@ -121,8 +119,8 @@ export const configurePackage = () => {
         config.generateFolder = options.generateFolder;
         writeConfig(config);
         console.log(
-          colors.cyan(
-            `Generation of folder files for the Services, Models, Controllers and Routes  set to ${colors.bold(
+          chalk.cyan(
+            `Generation of folder files for the Services, Models, Controllers and Routes  set to ${chalk.bold(
               config.generateFolder
             )}`
           )
@@ -132,9 +130,9 @@ export const configurePackage = () => {
 
       if (Object.keys(options).length === 0) {
         console.log(
-          colors.yellow(
-            colors.bold(
-              `No configurations applied, run ${colors.white(
+          chalk.yellow(
+            chalk.bold(
+              `No configurations applied, run ${chalk.white(
                 "dolph-cli config --help"
               )} to see available commands`
             )

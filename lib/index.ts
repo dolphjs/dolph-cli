@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import colors from "colors";
+import chalk from "chalk";
 import { program } from "commander";
 import figlet from "figlet";
 import { packageDescription } from "./utils/package_description.js";
@@ -19,11 +19,11 @@ figlet.text(
   },
   function (err: any, data: any) {
     if (err) {
-      console.log("Figlet error:", colors.red(err.toString()));
+      console.log("Figlet error:", chalk.red(err.toString()));
       return;
     }
 
-    console.log(colors.bold(colors.rainbow(data)));
+    console.log(chalk.bold(chalk.cyan(data)));
     InitDolphCli();
     packageDescription();
     configurePackage();
