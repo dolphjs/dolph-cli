@@ -17,17 +17,26 @@ figlet.text(
     width: 150,
     whitespaceBreak: true,
   },
-  function (err: any, data: any) {
+  function (err: any, _data: any) {
     if (err) {
-      console.log("Figlet error:", chalk.red(err.toString()));
+      console.log("[FIGLET ERROR]: ", chalk.red(err.toString()));
       return;
     }
 
-    console.log(chalk.bold(chalk.cyan(data)));
+    // console.log(chalk.bold(chalk.cyan(data)));
     InitDolphCli();
     packageDescription();
     configurePackage();
     packageGenerator();
+
+    program.command("*", { hidden: true }).action(() => {
+      console.log(
+        `${chalk.red("[DOLPH ERROR]: ")} ${chalk.redBright(
+          "unknown command. See list of available commands: "
+        )}`
+      );
+      program.help();
+    });
 
     program.parse(process.argv);
   }
