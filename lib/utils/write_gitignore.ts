@@ -7,6 +7,7 @@ export function writeGitignore(): void {
 .env
 logs
 yarn-error.log
+app
 `;
 
   const filePath = join(getRootDirectory(), ".gitignore");
