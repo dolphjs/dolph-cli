@@ -61,4 +61,4 @@ the command above creates a service, controller, model and routes file for `user
 
 ## Credit
 
-dolphjs-cli is inspired by methane-cli [https://github.com/adedoyin/methane-cli]
+dolphjs-cli is inspired by methane-cli [https://github.com/adedoyin-Emmanuel/methane-cli]
