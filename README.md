@@ -27,7 +27,7 @@ to install all packages .
 - models
 - routes
 
-It is recommended to make use of the `generate` command when one was to create these files because it generates code the dolphjs way. In a scenario when you want to create files for all of the above, let's say you want to write code for user logic and functionalities, use the `-a` flag, as in:
+It is recommended to make use of the `generate` command when one wants to create these files because it generates code the dolphjs way. In a scenario when you want to create files for all of the above, let's say you want to write code for user logic and functionalities, use the `-a` flag, as in:
 
 ```bash
 dolph-cli g -a user
