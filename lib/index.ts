@@ -7,6 +7,7 @@ import { packageDescription } from "./utils/package_description.js";
 import { configurePackage } from "./utils/read_user_config.js";
 import { InitDolphCli } from "./utils/package_init.js";
 import { packageGenerator } from "./utils/package_generator.js";
+import { watcherConfig } from "./daemon/watcherConfig.js";
 
 figlet.text(
   "dolphjs cli",
@@ -28,6 +29,7 @@ figlet.text(
     packageDescription();
     configurePackage();
     packageGenerator();
+    watcherConfig();
 
     program.command("*", { hidden: true }).action(() => {
       console.log(

@@ -30,8 +30,7 @@ export const ${capitalizeFirstLetter(
   }
 
   if (isMysql) {
-    template = `
-import { sequelizeInstance } from "@/configs/db.configs";
+    template = `import { sequelizeInstance } from "@/configs/db.configs";
 import { DataTypes } from "sequelize";
 
 export const ${capitalizeFirstLetter(
@@ -64,8 +63,7 @@ const generateOopJsTemplate = (
   };
 
   if (isMongo) {
-    template = `
-const { Schema, model } = require("mongoose");
+    template = `const { Schema, model } = require("mongoose");
 
 const ${capitalizeFirstLetter(modelName)}Schema = new Schema(
     {
@@ -82,8 +80,7 @@ module.exports = { ${capitalizeFirstLetter(modelName)}Model }
   }
 
   if (isMysql) {
-    template = `
-const { sequelizeInstance } = require("../../../configs/db.configs");
+    template = `const { sequelizeInstance } = require("../../../configs/db.configs");
 const { DataTypes } = require("sequelize");
 
 const User = sequelizeInstance.define("user", {
@@ -115,8 +112,7 @@ const generateFnTsTemplate = (
   };
 
   if (isMongo) {
-    template = `
-import { Schema, Document, model } from "mongoose";
+    template = `import { Schema, Document, model } from "mongoose";
 
 export interface I${capitalizeFirstLetter(modelName)} extends Document {
   
@@ -136,8 +132,7 @@ export const ${capitalizeFirstLetter(
 `;
   }
   if (isMysql) {
-    template = `
-import { sequelizeInstance } from "@/configs/db.configs";
+    template = `import { sequelizeInstance } from "@/configs/db.configs";
 import { DataTypes } from "sequelize";
 
 export const ${capitalizeFirstLetter(
@@ -169,8 +164,7 @@ const generateFnJsTemplate = (
   };
 
   if (isMongo) {
-    template = `
-const { Schema, model } = require("mongoose");
+    template = `const { Schema, model } = require("mongoose");
 
 const ${capitalizeFirstLetter(modelName)}Schema = new Schema(
     {
@@ -186,8 +180,7 @@ module.exports = { ${capitalizeFirstLetter(modelName)}Model };
 `;
   }
   if (isMysql) {
-    template = `
-const { sequelizeInstance } = require("../../../configs/db.configs");
+    template = `const { sequelizeInstance } = require("../../../configs/db.configs");
 const { DataTypes } = require("sequelize");
 
 const User = sequelizeInstance.define("user", {
