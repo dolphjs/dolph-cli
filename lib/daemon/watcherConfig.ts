@@ -1,11 +1,11 @@
 import { program } from "commander";
-import { startApp, watchFile } from "./watcher.js";
+import { startApp, startProdApp, watchFile } from "./watcher.js";
 
 export const watcherConfig = () => {
   program
     .command("start")
     .description("starts the dolphjs application")
-    .action(() => startApp());
+    .action(() => startProdApp());
   program
     .command("watch")
     .description("starts the dolphjs application in watch mode")
