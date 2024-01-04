@@ -5,6 +5,12 @@ import { getRootDirectory } from "../utils/get_root_dir_path.js";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { join } from "path";
 
+/**
+ * TODO: add child2.on('error', (err) => {
+  console.error('Error spawning child process:', err);
+});
+ */
+
 let fileExtension = "";
 
 let indexFilePath = "";
@@ -74,14 +80,6 @@ export const startProdApp = () => {
     stdio: "inherit",
   });
 
-  console.log(
-    chalk.bold(
-      `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
-        "starting dolph server ..."
-      )}`
-    )
-  );
-
   child.on("close", (code: number) => {
     if (code === 1) {
       console.log(
@@ -95,9 +93,17 @@ export const startProdApp = () => {
     }
   });
 
-  indexFilePath = join(getRootDirectory(), "app", `server.${fileExtension}`);
+  indexFilePath = join(getRootDirectory(), "app", `server.js`);
 
-  const child2 = spawn("node", indexFilePath, {
+  console.log(
+    chalk.bold(
+      `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
+        "starting dolph server ..."
+      )}`
+    )
+  );
+
+  const child2 = spawn("node", [indexFilePath], {
     stdio: "inherit",
   });
 
@@ -115,35 +121,50 @@ export const startProdApp = () => {
   });
 };
 
+const watcher = chokidar.watch(indexFilePath, {
+  ignored: "/node_modules",
+  persistent: true,
+  ignoreInitial: false,
+});
+
+let isWatcherActive = false;
+
 export const watchFile = () => {
-  console.log(
-    chalk.bold(
-      `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
-        "watching files for changes ..."
-      )}`
-    )
-  );
-
-  fileExtension = readConfig().language;
-  const watcher = chokidar.watch(indexFilePath, {
-    ignored: "/node_modules",
-    persistent: true,
-    ignoreInitial: false,
-  });
-
-  watcher.on("all", (_event, path) => {
-    chalk.bold(
-      `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
-        "file changed" + `[${path}]`
-      )}`
+  if (!isWatcherActive) {
+    console.log(
+      chalk.bold(
+        `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
+          "watching files for changes ..."
+        )}`
+      )
     );
-    startApp();
-  });
 
-  process.on("SIGINT", () => {
-    watcher.close();
-    process.exit(0);
-  });
+    isWatcherActive = true;
+
+    fileExtension = readConfig().language;
+
+    watcher.on("all", (_event, path) => {
+      chalk.bold(
+        `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
+          "file changed" + `[${path}]`
+        )}`
+      );
+      startApp();
+    });
+
+    process.on("SIGINT", () => {
+      watcher.close();
+      process.exit(0);
+    });
+  } else {
+    console.log(
+      chalk.bold(
+        `${chalk.red("[DOLPH ERROR]: ")} ${chalk.redBright(
+          "watcher is already active."
+        )}`
+      )
+    );
+  }
 };
 
 // startApp();
