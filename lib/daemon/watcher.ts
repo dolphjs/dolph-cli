@@ -124,12 +124,18 @@ export const watchFile = () => {
 
     fileExtension = readConfig().language;
 
+    const srcDirectory = join(getRootDirectory(), "src");
+
+    watcher.add(srcDirectory);
+
     watcher.on("all", (_event, path) => {
       `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
         "file changed" + `[${path}]`
       )}`;
 
-      startApp();
+      if (path.endsWith(".ts") || path.endsWith(".js")) {
+        startApp();
+      }
     });
 
     process.on("SIGINT", () => {
