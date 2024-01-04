@@ -17,11 +17,9 @@ let indexFilePath = "";
 
 export const startApp = () => {
   console.log(
-    chalk.bold(
-      `${chalk.yellow("[DOLPH INFO]: ")} ${chalk.yellowBright(
-        "starting dolph server ..."
-      )}`
-    )
+    `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
+      "starting dolph server ..."
+    )}`
   );
 
   fileExtension = readConfig().language;
@@ -35,11 +33,9 @@ export const startApp = () => {
   const spawnArgs = [...additionalOptions, indexFilePath];
 
   console.log(
-    chalk.bold(
-      `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
-        "starting dolph server ..."
-      )}`
-    )
+    `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
+      "starting dolph server ..."
+    )}`
   );
 
   const child = spawn(fileExtension === "ts" ? "ts-node" : "node", spawnArgs, {
@@ -48,13 +44,9 @@ export const startApp = () => {
 
   child.on("close", (code: number) => {
     if (code === 1) {
-      console.log(
-        chalk.bold(
-          `${chalk.red("[DOLPH ERROR]: ")} ${chalk.redBright(
-            "exiting watch mode ..."
-          )}`
-        )
-      );
+      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+        "exiting watch mode ..."
+      )}`;
       process.exit(1);
     }
   });
@@ -65,11 +57,9 @@ export const startProdApp = () => {
 
   if (fileExtension === "ts") {
     console.log(
-      chalk.bold(
-        `${chalk.yellow("[DOLPH INFO]: ")} ${chalk.yellowBright(
-          "compiling to javascript ..."
-        )}`
-      )
+      `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
+        "compiling to javascript ..."
+      )}`
     );
   }
 
@@ -83,11 +73,9 @@ export const startProdApp = () => {
   child.on("close", (code: number) => {
     if (code === 1) {
       console.log(
-        chalk.bold(
-          `${chalk.red("[DOLPH ERROR]: ")} ${chalk.redBright(
-            "exiting compilation ..."
-          )}`
-        )
+        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+          "exiting compilation ..."
+        )}`
       );
       process.exit(1);
     }
@@ -96,11 +84,9 @@ export const startProdApp = () => {
   indexFilePath = join(getRootDirectory(), "app", `server.js`);
 
   console.log(
-    chalk.bold(
-      `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
-        "starting dolph server ..."
-      )}`
-    )
+    `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
+      "starting dolph server ..."
+    )}`
   );
 
   const child2 = spawn("node", [indexFilePath], {
@@ -109,13 +95,10 @@ export const startProdApp = () => {
 
   child2.on("close", (code: number) => {
     if (code === 1) {
-      console.log(
-        chalk.bold(
-          `${chalk.red("[DOLPH ERROR]: ")} ${chalk.redBright(
-            "exiting watch mode ..."
-          )}`
-        )
-      );
+      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+        "exiting watch mode ..."
+      )}`;
+
       process.exit(1);
     }
   });
@@ -132,11 +115,9 @@ let isWatcherActive = false;
 export const watchFile = () => {
   if (!isWatcherActive) {
     console.log(
-      chalk.bold(
-        `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
-          "watching files for changes ..."
-        )}`
-      )
+      `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
+        "watching files for changes ..."
+      )}`
     );
 
     isWatcherActive = true;
@@ -144,11 +125,10 @@ export const watchFile = () => {
     fileExtension = readConfig().language;
 
     watcher.on("all", (_event, path) => {
-      chalk.bold(
-        `${chalk.green("[DOLPH INFO]: ")} ${chalk.greenBright(
-          "file changed" + `[${path}]`
-        )}`
-      );
+      `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
+        "file changed" + `[${path}]`
+      )}`;
+
       startApp();
     });
 
@@ -158,11 +138,9 @@ export const watchFile = () => {
     });
   } else {
     console.log(
-      chalk.bold(
-        `${chalk.red("[DOLPH ERROR]: ")} ${chalk.redBright(
-          "watcher is already active."
-        )}`
-      )
+      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+        "watcher is already active."
+      )}`
     );
   }
 };
