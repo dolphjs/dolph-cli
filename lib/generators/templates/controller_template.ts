@@ -5,8 +5,7 @@ const generateOopTsTemplate = (controllerName: string) => {
   };
 
   const className = capitalizeFirstLetter(controllerName) + "Controller";
-  template = `
-import { DolphControllerHandler } from "@dolphjs/dolph/classes";
+  template = `import { DolphControllerHandler } from "@dolphjs/dolph/classes";
 import {
   Dolph,
   SuccessResponse,
@@ -38,8 +37,7 @@ const generateOopJsTemplate = (controllerName: string) => {
 
   const className = capitalizeFirstLetter(controllerName) + "Controller";
 
-  template = `
-const { DolphControllerHandler } = require("@dolphjs/dolph/classes");
+  template = `const { DolphControllerHandler } = require("@dolphjs/dolph/classes");
 const {
   SuccessResponse,
   TryCatchAsyncFn,
@@ -64,8 +62,7 @@ module.exports = { ${className} }
 const generateFnTsTemplate = (controllerName: string) => {
   let template;
 
-  template = `
-import { TryCatchAsyncFn, SuccessResponse, DRequest, DResponse } from "@dolphjs/dolph/common";
+  template = `import { TryCatchAsyncFn, SuccessResponse, DRequest, DResponse } from "@dolphjs/dolph/common";
 
 export const defaultFunc = TryCatchAsyncFn(async (req: DRequest, res: DResponse) => {
   SuccessResponse({ res, body: { message: "${controllerName} working!" } });
@@ -79,8 +76,7 @@ export const defaultFunc = TryCatchAsyncFn(async (req: DRequest, res: DResponse)
 const generateFnJsTemplate = (controllerName: string) => {
   let template;
 
-  template = `
-const { TryCatchAsyncFn, SuccessResponse } = require("@dolphjs/dolph/common");
+  template = `const { TryCatchAsyncFn, SuccessResponse } = require("@dolphjs/dolph/common");
 
 const defaultFunc = TryCatchAsyncFn(async (req, res) => {
   SuccessResponse({ res, body: { message: "${controllerName} working!" } });

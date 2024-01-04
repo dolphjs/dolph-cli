@@ -8,3 +8,6 @@ and the large only that supports the CLI options
 update to cli-colors or chalk
 
 In the future, one config file should do, chnage directry name to something liek this: user.controller.ts
+
+limit call  of readConfig to speed up the process
+remove bold from text in log
