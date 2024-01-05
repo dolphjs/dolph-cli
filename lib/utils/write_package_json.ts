@@ -15,14 +15,13 @@ export function writePackageJsonFile(name: string, extension: string): void {
     "node": ">=18.0.0"
   },
   "scripts": {
-    "dev:start": "cross-env NODE_ENV=development nodemon",
+    "dev:start": "dolph watch",
     "dev:docker:start": "docker-compose -f docker-compose-dev.yml up",
     "dev:docker:stop": "docker-compose -f docker-compose-dev.yml down",
-    "build": "swc src -d app --source-maps --copy-files",
+    "build": "dolph build",
     "build:tsc": "tsc && tsc-alias",
-    "prod:start": "node app/server.js",
-    "clean": "rm -r app && rm -r logs",
-    "start": "npm run build && npm run prod:start"
+    "start": "dolph start",
+    "clean": "rm -r app && rm -r logs"
   },
   "dependencies": {
     "@dolphjs/dolph": "^1.1.0"
@@ -32,7 +31,6 @@ export function writePackageJsonFile(name: string, extension: string): void {
     "@swc/core": "^1.3.91",
     "@types/express": "^4.17.18",
     "@types/node": "^20.8.2",
-    "cross-env": "^7.0.3",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.8",
     "tsconfig-paths": "^4.2.0",
@@ -50,18 +48,14 @@ export function writePackageJsonFile(name: string, extension: string): void {
     "node": ">=18.0.0"
   },
   "scripts": {
-    "dev:start": "cross-env NODE_ENV=development nodemon",
+    "dev:start": "dolph watch",
     "dev:docker:start": "docker-compose -f docker-compose-dev.yml up",
     "dev:docker:stop": "docker-compose -f docker-compose-dev.yml down",
-    "prod:start": "node src/server.js",
     "clean": "rm -r logs",
-    "start": "npm run prod:start"
+    "start": "dolph start"
   },
   "dependencies": {
     "@dolphjs/dolph": "^1.1.0"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3"
   }
 }
 `;
