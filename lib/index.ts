@@ -10,7 +10,7 @@ import { packageGenerator } from "./utils/package_generator.js";
 import { watcherConfig } from "./daemon/watcherConfig.js";
 
 figlet.text(
-  "dolphjs cli",
+  "dolph cli",
   {
     font: "Big",
     horizontalLayout: "default",
