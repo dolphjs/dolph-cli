@@ -133,7 +133,7 @@ export const configurePackage = () => {
           chalk.yellow(
             chalk.bold(
               `No configurations applied, run ${chalk.white(
-                "dolph-cli config --help"
+                "dolph config --help"
               )} to see available commands`
             )
           )

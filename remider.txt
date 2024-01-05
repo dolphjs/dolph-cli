@@ -10,4 +10,7 @@ update to cli-colors or chalk
 In the future, one config file should do, chnage directry name to something liek this: user.controller.ts
 
 limit call  of readConfig to speed up the process
-remove bold from text in log
+
+new command for initing config files
+add dolph build and test for javascript files
+add more details in the stat command

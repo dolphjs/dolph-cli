@@ -52,6 +52,42 @@ export const startApp = () => {
   });
 };
 
+export const buildApp = () => {
+  fileExtension = readConfig().language;
+
+  if (fileExtension === "ts") {
+    console.log(
+      `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
+        "compiling to javascript ..."
+      )}`
+    );
+
+    indexFilePath = join(getRootDirectory(), "src", "server.ts");
+    const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
+
+    const child = spawn("swc", spawnArgs, {
+      stdio: "inherit",
+    });
+
+    child.on("close", (code: number) => {
+      if (code === 1) {
+        console.log(
+          `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+            "exiting compilation ..."
+          )}`
+        );
+        process.exit(1);
+      }
+    });
+  } else {
+    console.log(
+      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+        "cannot compile javascript file, exiting compilation ..."
+      )}`
+    );
+  }
+};
+
 export const startProdApp = () => {
   fileExtension = readConfig().language;
 
@@ -61,25 +97,25 @@ export const startProdApp = () => {
         "compiling to javascript ..."
       )}`
     );
+
+    indexFilePath = join(getRootDirectory(), "src", `server.${fileExtension}`);
+    const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
+
+    const child = spawn("swc", spawnArgs, {
+      stdio: "inherit",
+    });
+
+    child.on("close", (code: number) => {
+      if (code === 1) {
+        console.log(
+          `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+            "exiting compilation ..."
+          )}`
+        );
+        process.exit(1);
+      }
+    });
   }
-
-  indexFilePath = join(getRootDirectory(), "src", `server.${fileExtension}`);
-  const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
-
-  const child = spawn("swc", spawnArgs, {
-    stdio: "inherit",
-  });
-
-  child.on("close", (code: number) => {
-    if (code === 1) {
-      console.log(
-        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-          "exiting compilation ..."
-        )}`
-      );
-      process.exit(1);
-    }
-  });
 
   indexFilePath = join(getRootDirectory(), "app", `server.js`);
 

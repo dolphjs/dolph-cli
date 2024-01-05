@@ -16,7 +16,7 @@ export const readConfig = () => {
     console.log(
       chalk.bold(
         chalk.red(
-          "Error encountered reading config file, please run 'dolph-cli tr' to initialize config file 🥹"
+          "Error encountered reading config file, please run 'dolph tr' to initialize config file 🥹"
         )
       )
     );
