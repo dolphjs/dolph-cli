@@ -14,3 +14,4 @@ limit call  of readConfig to speed up the process
 new command for initing config files
 add dolph build and test for javascript files
 add more details in the stat command
+update readme to tell user they need to install ts-node and swc
