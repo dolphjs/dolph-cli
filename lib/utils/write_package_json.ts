@@ -21,7 +21,7 @@ export function writePackageJsonFile(name: string, extension: string): void {
     "build": "dolph build",
     "build:tsc": "tsc && tsc-alias",
     "start": "dolph start",
-    "clean": "rm -r app && rm -r logs",
+    "clean": "rm -r app && rm -r logs"
   },
   "dependencies": {
     "@dolphjs/dolph": "^1.1.0"

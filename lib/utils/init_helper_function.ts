@@ -32,7 +32,7 @@ export const initDolphCli = (appname: string) => {
 
   const configFolderPath = path.join(process.cwd());
   const srcPath = path.join(configFolderPath, "src");
-  const userConfigFilePath = path.join(configFolderPath, "dolph-cli.yaml");
+  const userConfigFilePath = path.join(configFolderPath, "dolph_cli.yaml");
 
   if (!existsSync(configFolderPath)) {
     mkdirSync(configFolderPath);
@@ -114,6 +114,8 @@ export const initDolphCli = (appname: string) => {
             )
           )
         );
+
+        process.exit(0);
       });
   } else {
     console.log(
