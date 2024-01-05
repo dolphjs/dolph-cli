@@ -1,6 +1,6 @@
 {
   "name": "@dolphjs/cli",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "The dolphjs-cli is a tool for efficient intialization and management of a dolphjs project",
   "main": "./dist/index.js",
   "repository": "https://github.com/dolphjs/dolph-cli.git",
@@ -35,7 +35,7 @@
     "dist/**/*"
   ],
   "bin": {
-    "dolph-cli": "./dist/index.js",
+    "dolph": "./dist/index.js",
     "dc": "./dist/index.js"
   },
   "dependencies": {

@@ -150,6 +150,3 @@ export const watchFile = () => {
     );
   }
 };
-
-// startApp();
-// watchFile();
