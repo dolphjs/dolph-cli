@@ -27,10 +27,11 @@ export const configurePackage = () => {
       "Generates a folder file for the Services, Models, Controllers and Routes (true or false)"
     )
     .action(async (name: any, options: any) => {
-      const config = readConfig();
+      let config = readConfig();
 
       Object.entries(name).forEach(([key, value]) => {
         if (key && key.toLocaleLowerCase().includes("language") && value) {
+          console.log(value.toString(), value);
           if (value.toString() !== "js" && value.toString() !== "ts") {
             console.log(
               chalk.red(
@@ -41,7 +42,7 @@ export const configurePackage = () => {
             );
             return;
           }
-          config.language = options.language;
+          config.language = value;
           writeConfig(config);
           console.log(
             chalk.cyan(
@@ -63,7 +64,7 @@ export const configurePackage = () => {
             return;
           }
 
-          config.paradigm = options.paradigm;
+          config.paradigm = value;
           writeConfig(config);
           console.log(
             chalk.cyan(
@@ -87,7 +88,7 @@ export const configurePackage = () => {
             return;
           }
 
-          config.database = options.database;
+          config.database = value;
           writeConfig(config);
           console.log(
             chalk.cyan(
@@ -136,7 +137,7 @@ export const configurePackage = () => {
             )
           )
         );
-        process.exit(0);
       }
+      process.exit(0);
     });
 };

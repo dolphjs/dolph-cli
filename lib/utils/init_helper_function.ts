@@ -84,6 +84,9 @@ export const initDolphCli = (appname: string) => {
         // },
       ])
       .then((replies) => {
+        // TODO: add this to the config file:
+        // # this is an auto generate file, please do not edit manually
+
         const userConfig = { ...defaultConfig, ...replies };
 
         const yamlString = yaml.dump(userConfig);

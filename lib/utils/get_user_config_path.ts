@@ -1,9 +1,9 @@
 import { existsSync } from "fs";
 import path from "path";
+import { getRootDirectory } from "./get_root_dir_path.js";
 
 export const getUserConfigFilePath = () => {
-  const userConfigFolderPath = path.join(process.cwd());
-  const userConfigFilePath = path.join(userConfigFolderPath, "dolph_cli.yaml");
+  const userConfigFilePath = path.join(getRootDirectory(), "dolph_cli.yaml");
 
   if (existsSync(userConfigFilePath)) {
     return userConfigFilePath;
