@@ -164,7 +164,7 @@ export const startProdApp = () => {
   });
 };
 
-const watcher = chokidar.watch(indexFilePath, {
+const watcher = chokidar.watch([], {
   ignored: "/node_modules",
   persistent: true,
   ignoreInitial: false,
@@ -188,7 +188,7 @@ export const watchFile = () => {
 
     watcher.add(srcDirectory);
 
-    watcher.on("all", (_event, path) => {
+    watcher.on("", (_event, path) => {
       `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
         "file changed" + `[${path}]`
       )}`;
