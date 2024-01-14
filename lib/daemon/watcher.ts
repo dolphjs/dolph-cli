@@ -164,7 +164,7 @@ export const startProdApp = () => {
   });
 };
 
-const watcher = chokidar.watch(indexFilePath, {
+const watcher = chokidar.watch([], {
   ignored: "/node_modules",
   persistent: true,
   ignoreInitial: false,
