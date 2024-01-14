@@ -188,7 +188,7 @@ export const watchFile = () => {
 
     watcher.add(srcDirectory);
 
-    watcher.on("", (_event, path) => {
+    watcher.on("all", (_event, path) => {
       `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
         "file changed" + `[${path}]`
       )}`;
