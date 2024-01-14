@@ -4,6 +4,7 @@ import chalk from "chalk";
 import { getRootDirectory } from "../utils/get_root_dir_path.js";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { join } from "path";
+import _ from "lodash";
 
 let fileExtension = "";
 
@@ -181,6 +182,8 @@ const watcher = chokidar.watch([], {
 
 let isWatcherActive = false;
 
+const debouncedStartApp = _.debounce(startApp, 1000);
+
 export const watchFile = () => {
   if (!isWatcherActive) {
     console.log(
@@ -203,7 +206,7 @@ export const watchFile = () => {
       )}`;
 
       if (path.endsWith(".ts") || path.endsWith(".js")) {
-        startApp();
+        debouncedStartApp();
       }
     });
 
