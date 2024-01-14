@@ -24,7 +24,12 @@ export const startApp = () => {
     "tsconfig-paths/register",
     "--transpile-only",
   ];
-  const spawnArgs = [...additionalOptions, indexFilePath];
+
+  let spawnArgs = [...additionalOptions, indexFilePath];
+
+  if (fileExtension === "js") {
+    spawnArgs = [indexFilePath];
+  }
 
   console.log(
     `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
@@ -110,7 +115,7 @@ export const startProdApp = () => {
       )}`
     );
 
-    indexFilePath = join(getRootDirectory(), "src", `server.${fileExtension}`);
+    indexFilePath = join(getRootDirectory(), "src", `server.ts`);
     const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
 
     const child = spawn("swc", spawnArgs, {
