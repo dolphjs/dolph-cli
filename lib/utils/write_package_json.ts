@@ -29,7 +29,6 @@ export function writePackageJsonFile(name: string, extension: string): void {
   "devDependencies": {
     "@swc/cli": "^0.1.62",
     "@swc/core": "^1.3.91",
-    "@types/express": "^4.17.18",
     "@types/node": "^20.8.2",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.8",
