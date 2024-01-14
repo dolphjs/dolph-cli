@@ -1,5 +1,5 @@
 import { program } from "commander";
-import { buildApp, startApp, startProdApp, watchFile } from "./watcher.js";
+import { buildApp, startProdApp, watchFile } from "./watcher.js";
 
 export const watcherConfig = () => {
   program
