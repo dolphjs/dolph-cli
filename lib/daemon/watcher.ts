@@ -138,6 +138,10 @@ export const startProdApp = () => {
 
   indexFilePath = join(getRootDirectory(), "app", `server.js`);
 
+  if (fileExtension === "js") {
+    indexFilePath = join(getRootDirectory(), "src", `server.js`);
+  }
+
   console.log(
     `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
       "starting dolph server ..."
