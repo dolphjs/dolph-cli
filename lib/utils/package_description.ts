@@ -6,7 +6,7 @@ export const packageDescription = () => {
     .version("1.1.0")
     .description(
       chalk.cyan(
-        "The dolphjs-cli is a tool for efficient intialization and management of a dolphjs project"
+        "The dolph-cli is a tool for efficient intialization and management of a dolphjs project"
       )
     );
 };

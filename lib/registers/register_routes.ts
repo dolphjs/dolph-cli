@@ -2,8 +2,6 @@ import chalk from "chalk";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import path from "path";
 
-// removed other possible dirs to enforce dolphjs style guide
-
 const findRoutesDirectory = () => {
   const rootDir = process.cwd();
   const possibleDirs = [
