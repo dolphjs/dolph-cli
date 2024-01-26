@@ -2,23 +2,19 @@ import { existsSync, mkdirSync, writeFileSync } from "fs";
 import inquirer from "inquirer";
 import path from "path";
 import yaml from "js-yaml";
-import chalk from "chalk";
 import { DefaultConfig } from "../types/config.js";
 import { writeSwcrc } from "./write_swrcc.js";
 import { writeTsConfigFile } from "./write_tsconfig.js";
 import { writeDolphConfig } from "./write_dolph_config.js";
 import { writePackageJsonFile } from "./write_package_json.js";
 import { writeGitignore } from "./write_gitignore.js";
+import { dolphMsg } from "../helpers/messages.js";
 
 export const initDolphCli = (appname: string) => {
   let projectName = appname;
   if (appname.length === 0) {
-    console.log(
-      chalk.red(
-        chalk.bold(
-          "Provide a name for you project or indicate with a '.' to use current directory "
-        )
-      )
+    dolphMsg.errorGray(
+      "provide a name for you project or indicate with a '.' to use current directory."
     );
     return;
   }
@@ -47,6 +43,7 @@ export const initDolphCli = (appname: string) => {
     paradigm: "oop",
     database: "mongo",
     generateFolder: true,
+    routing: "express",
   };
 
   if (!existsSync(userConfigFilePath)) {
@@ -74,22 +71,28 @@ export const initDolphCli = (appname: string) => {
           choices: ["mongo", "mysql", "postgresql", "other"],
           default: "mongo",
         },
-        // {
-        //   type: "list",
-        //   name: "generateFolder",
-        //   message:
-        //     "Generate folder and files for the Services, Models, Controllers and Routes",
-        //   choices: ["true", "false"],
-        //   default: "true",
-        // },
+        {
+          type: "list",
+          name: "routing",
+          message:
+            "Which dolph routing architecture would you be using? (choosing 'spring' means that you are making use of  both 'oop' & 'typescript')",
+          choices: ["express", "spring"],
+          default: "express",
+        },
       ])
       .then((replies) => {
         // TODO: add this to the config file:
-        // # this is an auto generate file, please do not edit manually
+        const comment =
+          "# this is an auto-generated file, please do not edit manually\n";
+
+        if ((replies.routing = "spring")) {
+          replies.paradigm = "oop";
+          replies.language = "ts";
+        }
 
         const userConfig = { ...defaultConfig, ...replies };
 
-        const yamlString = yaml.dump(userConfig);
+        const yamlString = comment + yaml.dump(userConfig);
 
         writeFileSync(userConfigFilePath, yamlString, "utf8");
 
@@ -102,31 +105,19 @@ export const initDolphCli = (appname: string) => {
         writePackageJsonFile(projectName, userConfig.language);
         writeGitignore();
 
-        console.log(
-          chalk.green(
-            chalk.bold(
-              "dolph cli configurations have been initialized successfully 😎."
-            )
-          )
+        dolphMsg.infoBlue(
+          "dolph configurations have been initialized successfully ✨."
         );
 
-        console.log(
-          chalk.green(
-            chalk.bold(
-              "run yarn install to install dependencies in project directory and start coding 😉."
-            )
-          )
+        dolphMsg.infoYellow(
+          "run `yarn install` to install dependencies in project directory and start building 🚀."
         );
 
         process.exit(0);
       });
   } else {
-    console.log(
-      chalk.bold(
-        chalk.cyan(
-          "I see you already have your dolph cli configurations present 😉."
-        )
-      )
+    dolphMsg.info(
+      "I see you already have your dolph configurations present, so I'll abort gently ... 😉."
     );
   }
 };

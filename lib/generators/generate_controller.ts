@@ -3,6 +3,7 @@ import path from "path";
 import chalk from "chalk";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveControllerContent } from "./resolvers/resolve_controller_content.js";
+import { generateController as generateSpringController } from "./spring/generate_spring_controller.js";
 
 const createControllerDirectory = () => {
   const projectRoot = path.join(process.cwd());
@@ -50,19 +51,16 @@ export const generateControllerFile = async (
 };
 
 export const generateController = async (name: string) => {
+  if (readConfig().routing === "spring") {
+    generateSpringController(name);
+  }
+
   if (!name)
     chalk.bold(chalk.red("Controller extension or name is required! 🤨"));
 
   let controllerDir = findControllerDirectory();
 
   if (!controllerDir) {
-    //TODO: create one if it doesn't exist
-
-    // console.log(
-    //   chalk.bold(chalk.red("controller directory doesn't exist 🤨"))
-    // );
-    // return;
-
     createControllerDirectory();
     controllerDir = findControllerDirectory();
   }

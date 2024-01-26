@@ -8,6 +8,8 @@ import * as mysqlGen from "../generators/generate_mysql.js";
 import { readConfig } from "./read_user_config_path.js";
 import { addRoutesIndexFile } from "../registers/register_routes.js";
 import { addServerFile } from "../registers/server_file_routes.js";
+import { dolphMsg } from "../helpers/messages.js";
+import { generateComponent } from "../generators/spring/generate_spring_component.js";
 
 export const packageGenerator = () => {
   program
@@ -22,25 +24,22 @@ export const packageGenerator = () => {
       "Generates a dolphjs controller file."
     )
     .option(
-      "-r, --routes" + chalk.bold(chalk.blue("<name>")),
+      "-r, --route" + chalk.bold(chalk.blue("<name>")),
       "Generates a dolphjs routes file."
     )
     .option(
-      "-m, --models" + chalk.bold(chalk.blue("<name>")),
+      "-m, --model" + chalk.bold(chalk.blue("<name>")),
       "Generates a dolphjs models file."
     )
     .option(
-      "-a, --all" + chalk.bold(chalk.blue("<name>")),
-      "Generates dolphjs ocntrollers, routes, models and services files for the name paramter."
+      "-com, --component" + chalk.bold(chalk.blue("<name>")),
+      "Generates a dolphjs spring component file."
     )
-    // .option(
-    //   "-in, --interfaces" + chalk.bold(chalk.blue("<name>")),
-    //   "Generates a dolphjs interfaces file."
-    // )
-    // .option(
-    //   "-hp, --helper" + chalk.bold(chalk.blue("<name>")),
-    //   "Generates a dolphjs helper file."
-    // )
+    .option(
+      "-a, --all" + chalk.bold(chalk.blue(" <name> ")),
+      "Generates dolphjs controllers, routes, models and services files for the name paramter."
+    )
+
     .action(async (name: any, _options: any) => {
       Object.entries(name).forEach(([key, value]) => {
         // generates controller files for the paramter name
@@ -54,17 +53,25 @@ export const packageGenerator = () => {
         }
 
         // generatess routes files for the paramter name
-        if (key && key.toLowerCase().includes("routes") && value) {
-          routesGen.generateRouter(value.toString());
-          addRoutesIndexFile(value.toString(), readConfig);
+        if (key && key.toLowerCase().includes("route") && value) {
+          if (readConfig().routing === "spring") {
+            dolphMsg.errorGray("cannot create routes file for spring routing.");
+          } else {
+            routesGen.generateRouter(value.toString());
+            addRoutesIndexFile(value.toString(), readConfig);
+          }
         }
 
         // generatess model fles for the paramter name
-        if (key && key.toLowerCase().includes("models") && value) {
+        if (key && key.toLowerCase().includes("model") && value) {
           modelGen.generateModel(value.toString());
           if (readConfig().database === "mysql") {
             mysqlGen.generateConfig(value.toString());
           }
+        }
+
+        if (key && key.toLowerCase().includes("component") && value) {
+          generateComponent(value.toString());
         }
 
         // generates files for all the above options
@@ -75,9 +82,13 @@ export const packageGenerator = () => {
           }
           serviceGen.generateService(value.toString());
           controllerGen.generateController(value.toString());
-          routesGen.generateRouter(value.toString());
-          addRoutesIndexFile(value.toString(), readConfig);
-          addServerFile(readConfig);
+          if (readConfig().routing === "express") {
+            routesGen.generateRouter(value.toString());
+            addRoutesIndexFile(value.toString(), readConfig);
+            addServerFile(readConfig);
+          } else {
+            generateComponent(value.toString());
+          }
         }
       });
 
