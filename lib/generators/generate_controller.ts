@@ -53,47 +53,49 @@ export const generateControllerFile = async (
 export const generateController = async (name: string) => {
   if (readConfig().routing === "spring") {
     generateSpringController(name);
-  }
+  } else {
+    if (!name)
+      chalk.bold(chalk.red("Controller extension or name is required! 🤨"));
 
-  if (!name)
-    chalk.bold(chalk.red("Controller extension or name is required! 🤨"));
+    let controllerDir = findControllerDirectory();
 
-  let controllerDir = findControllerDirectory();
-
-  if (!controllerDir) {
-    createControllerDirectory();
-    controllerDir = findControllerDirectory();
-  }
-
-  const controllerDirName = path.join(controllerDir, name);
-
-  const controllerFilePath = path.join(
-    controllerDirName + `/${name}.controller.${readConfig().language}`
-  );
-
-  try {
-    // Create the generate controller path
-    if (readConfig().generateFolder === "true" || true) {
-      mkdirSync(controllerDirName);
+    if (!controllerDir) {
+      createControllerDirectory();
+      controllerDir = findControllerDirectory();
     }
 
-    //TODO: if no index.ts file, create one too
+    const controllerDirName = path.join(controllerDir, name);
 
-    generateControllerFile(
-      name,
-      path.join(controllerFilePath),
-      readConfig
-      // controllerDirName,
+    const controllerFilePath = path.join(
+      controllerDirName + `/${name}.controller.${readConfig().language}`
     );
-  } catch (e: any) {
-    console.log(chalk.bold(chalk.red(e)));
-  }
 
-  console.log(
-    `${chalk.bold(
-      chalk.green(
-        `${name}.controller.${readConfig().language} generated successfully! 🙃`
-      )
-    )}`
-  );
+    try {
+      // Create the generate controller path
+      if (readConfig().generateFolder === "true" || true) {
+        mkdirSync(controllerDirName);
+      }
+
+      //TODO: if no index.ts file, create one too
+
+      generateControllerFile(
+        name,
+        path.join(controllerFilePath),
+        readConfig
+        // controllerDirName,
+      );
+    } catch (e: any) {
+      console.log(chalk.bold(chalk.red(e)));
+    }
+
+    console.log(
+      `${chalk.bold(
+        chalk.green(
+          `${name}.controller.${
+            readConfig().language
+          } generated successfully! 🙃`
+        )
+      )}`
+    );
+  }
 };

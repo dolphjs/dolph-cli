@@ -41,7 +41,7 @@ export const addComponentToServerFile = (componentName: string) => {
   const capitalizedString =
     componentName.charAt(0).toUpperCase() + componentName.slice(1);
 
-  const importStatement = `import { ${capitalizedString}Component } from "./${componentName}/${componentName}.component.ts";`;
+  const importStatement = `import { ${capitalizedString}Component } from "./${componentName}/${componentName}.component";`;
 
   try {
     if (!existsSync(serverPath)) {

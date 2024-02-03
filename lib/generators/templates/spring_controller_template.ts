@@ -11,7 +11,7 @@ import {
   SuccessResponse,
   DRequest,
   DResponse
-} from "@dolphjs/dolph/common
+} from "@dolphjs/dolph/common";
 import { Get, Route } from "@dolphjs/dolph/decorators";
 
 @Route('${componentName}')
