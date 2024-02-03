@@ -10,6 +10,10 @@ import { addRoutesIndexFile } from "../registers/register_routes.js";
 import { addServerFile } from "../registers/server_file_routes.js";
 import { dolphMsg } from "../helpers/messages.js";
 import { generateComponent } from "../generators/spring/generate_spring_component.js";
+import { generateController } from "../generators/spring/generate_spring_controller.js";
+import { generateService } from "../generators/spring/generate_spring_service.js";
+import { generateModel } from "../generators/spring/generate_spring_model.js";
+import { addComponentToServerFile } from "../registers/register_component.js";
 
 export const packageGenerator = () => {
   program
@@ -49,7 +53,15 @@ export const packageGenerator = () => {
 
         // generates service files for the paramter name
         if (key && key.toLowerCase().includes("service") && value) {
-          serviceGen.generateService(value.toString());
+          if (readConfig().routing === "express") {
+            serviceGen.generateService(value.toString());
+          } else {
+            generateService(
+              value.toString(),
+              readConfig().database === "mongo" ? true : false,
+              readConfig().database === "mysql" ? true : false
+            );
+          }
         }
 
         // generatess routes files for the paramter name
@@ -64,9 +76,17 @@ export const packageGenerator = () => {
 
         // generatess model fles for the paramter name
         if (key && key.toLowerCase().includes("model") && value) {
-          modelGen.generateModel(value.toString());
-          if (readConfig().database === "mysql") {
-            mysqlGen.generateConfig(value.toString());
+          if (readConfig().routing === "express") {
+            modelGen.generateModel(value.toString());
+            if (readConfig().database === "mysql") {
+              mysqlGen.generateConfig(value.toString());
+            }
+          } else {
+            generateModel(
+              value.toString(),
+              readConfig().database === "mongo" ? true : false,
+              readConfig().database === "mysql" ? true : false
+            );
           }
         }
 
@@ -76,18 +96,38 @@ export const packageGenerator = () => {
 
         // generates files for all the above options
         if (key && key.toLowerCase().includes("all") && value) {
-          modelGen.generateModel(value.toString());
+          if (readConfig().routing === "express") {
+            modelGen.generateModel(value.toString());
+          } else {
+            generateModel(
+              value.toString(),
+              readConfig().database === "mongo" ? true : false,
+              readConfig().database === "mysql" ? true : false
+            );
+          }
+
           if (readConfig().database === "mysql") {
             mysqlGen.generateConfig(value.toString());
           }
-          serviceGen.generateService(value.toString());
-          controllerGen.generateController(value.toString());
+
+          if (readConfig().routing === "express") {
+            serviceGen.generateService(value.toString());
+            controllerGen.generateController(value.toString());
+          } else {
+            generateService(
+              value.toString(),
+              readConfig().database === "mongo" ? true : false,
+              readConfig().database === "mysql" ? true : false
+            );
+          }
+
           if (readConfig().routing === "express") {
             routesGen.generateRouter(value.toString());
             addRoutesIndexFile(value.toString(), readConfig);
             addServerFile(readConfig);
           } else {
             generateComponent(value.toString());
+            addComponentToServerFile(value.toString());
           }
         }
       });
