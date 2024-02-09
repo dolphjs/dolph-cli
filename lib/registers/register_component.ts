@@ -74,7 +74,9 @@ dolph.start();
 
           fileContents = fileContent.replace(
             existingCode,
-            ` ${existingCode ? existingCode + ", " : ""}${newComponentInstance}`
+            `${
+              existingCode.length > 0 ? existingCode + ", " : ""
+            }${newComponentInstance}`
           );
 
           const updatedContents = `${importStatement}\n${fileContents}`;
