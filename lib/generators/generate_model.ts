@@ -1,8 +1,12 @@
 import { existsSync, mkdirSync, writeFile } from "fs";
 import path from "path";
 import chalk from "chalk";
+import { promisify } from "util";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveModelContent } from "./resolvers/resolve_model_content.js";
+import { generateModel as generateSpringModel } from "./spring/generate_spring_model.js";
+
+const writeFileAsync = promisify(writeFile);
 
 const createModelDirectory = () => {
   const projectRoot = path.join(process.cwd());
@@ -13,20 +17,9 @@ const createModelDirectory = () => {
   }
 };
 
-// removed other possible dirs to enforce dolphjs style guide
-
 const findModelDirectory = () => {
   const rootDir = process.cwd();
-  const possibleDirs = [
-    "/src/models",
-    // "/src/Models",
-    // "/src/model",
-    // "/src/Model",
-    // "/Models",
-    // "/Model",
-    // "/models",
-    // "/model",
-  ];
+  const possibleDirs = ["/src/models"];
 
   const modelDir = possibleDirs.find((dir) =>
     existsSync(path.join(rootDir, dir))
@@ -39,54 +32,52 @@ export const generateModelFile = async (
   modelDir: string,
   readConfig: any
 ) => {
-  await writeFile(modelDir, resolveModelContent(readConfig, name), (error) => {
-    if (error) {
-      console.log(chalk.bold(chalk.red(error.toString())));
-    }
-  });
+  try {
+    await writeFileAsync(modelDir, resolveModelContent(readConfig, name));
+    console.log(
+      `${chalk.bold(
+        chalk.green(
+          `${name}.model.${readConfig().language} generated successfully! 🙃`
+        )
+      )}`
+    );
+  } catch (error) {
+    console.log(chalk.bold(chalk.red(error.toString())));
+  }
 };
 
 export const generateModel = async (name: string) => {
-  if (!name) chalk.bold(chalk.red("Model extension or name is required! 🤨"));
-
-  let modelDir = findModelDirectory();
-
-  if (!modelDir) {
-    //TODO: create one if it doesn't exist
-
-    // console.log(chalk.bold(chalk.red("Model directory doesn't exist 🤨")));
-    // return;
-    createModelDirectory();
-    modelDir = findModelDirectory();
-  }
-
-  const modelDirName = path.join(modelDir, name);
-
-  const modelFilePath = path.join(
-    modelDirName + `/${name}.model.${readConfig().language}`
-  );
-
-  try {
-    // Create the generate controller path
-    mkdirSync(modelDirName);
-
-    //TODO: if no index.ts file, create one too
-
-    generateModelFile(
+  if (readConfig().routing === "spring") {
+    await generateSpringModel(
       name,
-      path.join(modelFilePath),
-      readConfig
-      // modelDirName,
+      readConfig().database === "mongo" ? true : false,
+      readConfig().database === "mysql" ? true : false
     );
-  } catch (e: any) {
-    console.log(chalk.bold(chalk.red(e)));
-  }
+  } else {
+    if (!name) {
+      console.log(
+        chalk.bold(chalk.red("Model extension or name is required! 🤨"))
+      );
+      return;
+    }
 
-  console.log(
-    `${chalk.bold(
-      chalk.green(
-        `${name}.model.${readConfig().language} generated successfully! 🙃`
-      )
-    )}`
-  );
+    let modelDir = findModelDirectory();
+
+    if (!modelDir) {
+      createModelDirectory();
+      modelDir = findModelDirectory();
+    }
+
+    const modelDirName = path.join(modelDir, name);
+    const modelFilePath = path.join(
+      modelDirName + `/${name}.model.${readConfig().language}`
+    );
+
+    try {
+      mkdirSync(modelDirName);
+      await generateModelFile(name, path.join(modelFilePath), readConfig);
+    } catch (e: any) {
+      console.log(chalk.bold(chalk.red(e)));
+    }
+  }
 };

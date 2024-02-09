@@ -2,9 +2,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dolphMsg } from "../helpers/messages.js";
 import path from "path";
 
-const createSrcDirectory = () => {
+const createComponentDirectory = () => {
   const projectRoot = path.join(process.cwd());
-  const userComponentPath = path.join(projectRoot, `/src`);
+  const userComponentPath = path.join(projectRoot, `/src/components`);
 
   if (!existsSync(userComponentPath)) {
     mkdirSync(userComponentPath);
@@ -57,15 +57,14 @@ dolph.start();
       const newComponentInstance = `${capitalizedString}Component`;
 
       if (!fileContent.includes(importStatement)) {
-        const updatedContent = `
-        ${importStatement}\n${fileContent}}`;
+        const updatedContent = `${importStatement}\n${fileContent}`;
         writeFileSync(serverPath, updatedContent);
       }
 
       if (fileContent.includes(`const dolph`)) {
         // add new controller class to the existing array
         const routesArrayMatch = fileContent.match(
-          /const dolph = new DolphFactory\[([\s\S]]+?)\];/
+          /const dolph = new DolphFactory\(([^)]+)\);/
         );
 
         if (routesArrayMatch) {
@@ -75,9 +74,11 @@ dolph.start();
 
           fileContents = fileContent.replace(
             existingCode,
-            `${
-              existingCode.length > 0 ? existingCode + ", " : ""
-            }${newComponentInstance}`
+            `[${
+              existingCode.length > 0
+                ? existingCode.slice(0, -1) + `, ${newComponentInstance}]`
+                : newComponentInstance
+            }`
           );
 
           const updatedContents = `${importStatement}\n${fileContents}`;

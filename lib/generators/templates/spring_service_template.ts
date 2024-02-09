@@ -54,7 +54,7 @@ import { ${capitalizeFirstLetter(componentName)}Model, I${capitalizeFirstLetter(
       componentName
     )}Model)
 export class ${className} extends DolphServiceHandler<Dolph> {
-  ${componentName}Model!: Model<>;
+  ${componentName}Model!: Model<I${capitalizeFirstLetter(componentName)}>;
 
   constructor() {
     super("${className.toLowerCase()}");

@@ -1,6 +1,6 @@
 {
   "name": "@dolphjs/cli",
-  "version": "1.1.9",
+  "version": "1.1.12",
   "description": "The dolphjs-cli is a tool for efficient intialization and management of a dolphjs project",
   "main": "./dist/index.js",
   "repository": "https://github.com/dolphjs/dolph-cli.git",

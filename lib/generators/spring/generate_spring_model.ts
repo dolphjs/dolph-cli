@@ -3,10 +3,16 @@ import path from "path";
 import chalk from "chalk";
 import { generateSpringModel } from "../../generators/templates/spring_model_template.js";
 import { dolphMsg } from "../../helpers/messages.js";
+import { promisify } from "util";
+
+const writeFileAsync = promisify(writeFile);
 
 const createModelDirectory = (componentName: string) => {
   const projectRoot = path.join(process.cwd());
-  const userModelPath = path.join(projectRoot, `/src/${componentName}`);
+  const userModelPath = path.join(
+    projectRoot,
+    `/src/components/${componentName}`
+  );
 
   if (!existsSync(userModelPath)) {
     mkdirSync(userModelPath);
@@ -15,7 +21,7 @@ const createModelDirectory = (componentName: string) => {
 
 const findModelDirectory = (componentName: string) => {
   const rootDir = process.cwd();
-  const possibleDirs = [`src/${componentName}`];
+  const possibleDirs = [`src/components/${componentName}`];
 
   const modelDir = possibleDirs.find((dir) =>
     existsSync(path.join(rootDir, dir))
@@ -30,15 +36,14 @@ export const generateSpringModelFile = async (
   isMongo: boolean,
   isMySql: boolean
 ) => {
-  await writeFile(
-    modelDir,
-    generateSpringModel(componentName, isMongo, isMySql),
-    (error) => {
-      if (error) {
-        dolphMsg.errorRed(error.toString());
-      }
-    }
-  );
+  try {
+    await writeFileAsync(
+      modelDir,
+      generateSpringModel(componentName, isMongo, isMySql)
+    );
+  } catch (error) {
+    dolphMsg.errorRed(error.toString());
+  }
 };
 
 export const generateModel = async (
@@ -46,7 +51,10 @@ export const generateModel = async (
   isMongo: boolean,
   isMySql: boolean
 ) => {
-  if (!name) dolphMsg.errorRed("model extension or name is required! 🤨");
+  if (!name) {
+    dolphMsg.errorRed("Model extension or name is required! 🤨");
+    return;
+  }
 
   let modelDir = findModelDirectory(name);
 
@@ -58,14 +66,18 @@ export const generateModel = async (
   const modelFilePath = path.join(modelDir + `/${name}.model.ts`);
 
   try {
-    generateSpringModelFile(name, path.join(modelFilePath), isMongo, isMySql);
+    await generateSpringModelFile(
+      name,
+      path.join(modelFilePath),
+      isMongo,
+      isMySql
+    );
+    dolphMsg.info(
+      `${chalk.blue(
+        `${name}.model.ts`
+      )} generated successfully for ${chalk.blue(`${name}`)} component.`
+    );
   } catch (e: any) {
     dolphMsg.errorRed(e);
   }
-
-  dolphMsg.info(
-    `${chalk.blue(`${name}.model.ts`)} generated successfully for ${chalk.blue(
-      `${name}`
-    )} component.`
-  );
 };
