@@ -10,9 +10,6 @@ import { addRoutesIndexFile } from "../registers/register_routes.js";
 import { addServerFile } from "../registers/server_file_routes.js";
 import { dolphMsg } from "../helpers/messages.js";
 import { generateComponent } from "../generators/spring/generate_spring_component.js";
-import { generateController } from "../generators/spring/generate_spring_controller.js";
-import { generateService } from "../generators/spring/generate_spring_service.js";
-import { generateModel } from "../generators/spring/generate_spring_model.js";
 import { addComponentToServerFile } from "../registers/register_component.js";
 
 export const packageGenerator = () => {
