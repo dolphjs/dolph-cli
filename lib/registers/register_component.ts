@@ -41,7 +41,7 @@ export const addComponentToServerFile = (componentName: string) => {
   const capitalizedString =
     componentName.charAt(0).toUpperCase() + componentName.slice(1);
 
-  const importStatement = `import { ${capitalizedString}Component } from "./${componentName}/${componentName}.component";`;
+  const importStatement = `import { ${capitalizedString}Component } from "./components/${componentName}/${componentName}.component";`;
 
   try {
     if (!existsSync(serverPath)) {
@@ -74,7 +74,7 @@ dolph.start();
 
           fileContents = fileContent.replace(
             existingCode,
-            `[${
+            `${
               existingCode.length > 0
                 ? existingCode.slice(0, -1) + `, ${newComponentInstance}]`
                 : newComponentInstance

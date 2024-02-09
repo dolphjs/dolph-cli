@@ -5,6 +5,7 @@ import { promisify } from "util";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveControllerContent } from "./resolvers/resolve_controller_content.js";
 import { generateController as generateSpringController } from "./spring/generate_spring_controller.js";
+import { addControllerInComponentFIle } from "../registers/register_controllers_in_components.js";
 
 const writeFileAsync = promisify(writeFile);
 
@@ -54,6 +55,7 @@ export const generateControllerFile = async (
 export const generateController = async (name: string) => {
   if (readConfig().routing === "spring") {
     await generateSpringController(name);
+    addControllerInComponentFIle(name);
   } else {
     if (!name) {
       console.log(
