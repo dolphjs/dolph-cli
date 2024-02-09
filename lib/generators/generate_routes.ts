@@ -70,7 +70,7 @@ export const generateRouter = async (name: string) => {
       mkdirSync(routesDirName);
     }
 
-    generateRoutesFile(name, path.join(routesFilePath), readConfig);
+    await generateRoutesFile(name, path.join(routesFilePath), readConfig);
   } catch (e: any) {
     console.log(chalk.bold(chalk.red(e)));
   }

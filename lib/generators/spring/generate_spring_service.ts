@@ -9,7 +9,10 @@ const writeFileAsync = promisify(writeFile);
 
 const createServiceDirectory = (componentName: string) => {
   const projectRoot = path.join(process.cwd());
-  const userServicePath = path.join(projectRoot, `/src/${componentName}`);
+  const userServicePath = path.join(
+    projectRoot,
+    `/src/components/${componentName}`
+  );
 
   if (!existsSync(userServicePath)) {
     mkdirSync(userServicePath);
@@ -18,7 +21,7 @@ const createServiceDirectory = (componentName: string) => {
 
 const findServiceDirectory = (componentName: string) => {
   const rootDir = process.cwd();
-  const possibleDirs = [`src/${componentName}`];
+  const possibleDirs = [`src/components/${componentName}`];
 
   const serviceDir = possibleDirs.find((dir) =>
     existsSync(path.join(rootDir, dir))

@@ -53,7 +53,7 @@ export const generateControllerFile = async (
 
 export const generateController = async (name: string) => {
   if (readConfig().routing === "spring") {
-    generateSpringController(name);
+    await generateSpringController(name);
   } else {
     if (!name) {
       console.log(
@@ -79,7 +79,11 @@ export const generateController = async (name: string) => {
         mkdirSync(controllerDirName);
       }
 
-      generateControllerFile(name, path.join(controllerFilePath), readConfig);
+      await generateControllerFile(
+        name,
+        path.join(controllerFilePath),
+        readConfig
+      );
     } catch (e: any) {
       console.log(chalk.bold(chalk.red(e)));
     }

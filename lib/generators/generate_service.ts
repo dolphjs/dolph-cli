@@ -48,7 +48,7 @@ export const generateServiceFile = async (
 
 export const generateService = async (name: string) => {
   if (readConfig().routing === "spring") {
-    generateSpringService(
+    await generateSpringService(
       name,
       readConfig().database === "mongo" ? true : false,
       readConfig().database === "mysql" ? true : false
@@ -78,7 +78,7 @@ export const generateService = async (name: string) => {
         mkdirSync(serviceDirName);
       }
 
-      generateServiceFile(name, path.join(serviceFilePath), readConfig);
+      await generateServiceFile(name, path.join(serviceFilePath), readConfig);
     } catch (e: any) {
       console.log(chalk.bold(chalk.red(e)));
     }

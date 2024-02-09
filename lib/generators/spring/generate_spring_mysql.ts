@@ -2,15 +2,14 @@ import { existsSync, mkdirSync, writeFile } from "fs";
 import path from "path";
 import chalk from "chalk";
 import { promisify } from "util";
-import { readConfig } from "../utils/read_user_config_path.js";
-import { resolveMySqlContent } from "./resolvers/resolve_model_content.js";
-import { generateConfig as generateSpringConfig } from "./spring/generate_spring_mysql.js";
+import { readConfig } from "../../utils/read_user_config_path.js";
+import { resolveMySqlContent } from "./../resolvers/resolve_model_content.js";
 
 const writeFileAsync = promisify(writeFile);
 
 const createConfigDirectory = () => {
   const projectRoot = path.join(process.cwd());
-  const userConfigFilePath = path.join(projectRoot, "/src/configs");
+  const userConfigFilePath = path.join(projectRoot, "/src/shared/configs");
 
   if (!existsSync(userConfigFilePath)) {
     mkdirSync(userConfigFilePath);
@@ -19,7 +18,7 @@ const createConfigDirectory = () => {
 
 const findConfigDirectory = () => {
   const rootDir = process.cwd();
-  const possibleDirs = ["/src/configs"];
+  const possibleDirs = ["/src/shared/configs"];
 
   const configDir = possibleDirs.find((dir) =>
     existsSync(path.join(rootDir, dir))
@@ -54,25 +53,21 @@ export const generateConfig = async (name: string) => {
     return;
   }
 
-  if (readConfig().routing === "spring") {
-    await generateSpringConfig(name);
-  } else {
-    let configDir = findConfigDirectory();
+  let configDir = findConfigDirectory();
 
-    if (!configDir) {
-      createConfigDirectory();
-      configDir = findConfigDirectory();
-    }
+  if (!configDir) {
+    createConfigDirectory();
+    configDir = findConfigDirectory();
+  }
 
-    const configDirName = configDir;
-    const configFilePath = path.join(
-      configDirName + `/db.configs.${readConfig().language}`
-    );
+  const configDirName = configDir;
+  const configFilePath = path.join(
+    configDirName + `/db.configs.${readConfig().language}`
+  );
 
-    try {
-      await generateConfigFile(name, path.join(configFilePath), readConfig);
-    } catch (e: any) {
-      console.log(chalk.bold(chalk.red(e)));
-    }
+  try {
+    await generateConfigFile(name, path.join(configFilePath), readConfig);
+  } catch (e: any) {
+    console.log(chalk.bold(chalk.red(e)));
   }
 };

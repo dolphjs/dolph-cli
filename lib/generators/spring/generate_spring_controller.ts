@@ -9,7 +9,10 @@ const writeFileAsync = promisify(writeFile);
 
 const createControllerDirectory = (componentName: string) => {
   const projectRoot = path.join(process.cwd());
-  const userCompontrollerPath = path.join(projectRoot, `/src/${componentName}`);
+  const userCompontrollerPath = path.join(
+    projectRoot,
+    `/src/components/${componentName}`
+  );
 
   if (!existsSync(userCompontrollerPath)) {
     mkdirSync(userCompontrollerPath);
@@ -18,7 +21,7 @@ const createControllerDirectory = (componentName: string) => {
 
 const findControllerDirectory = (componentName: string) => {
   const rootDir = process.cwd();
-  const possibleDirs = [`src/${componentName}`];
+  const possibleDirs = [`src/components/${componentName}`];
 
   const controllerDir = possibleDirs.find((dir) =>
     existsSync(path.join(rootDir, dir))

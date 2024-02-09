@@ -48,7 +48,7 @@ export const generateModelFile = async (
 
 export const generateModel = async (name: string) => {
   if (readConfig().routing === "spring") {
-    generateSpringModel(
+    await generateSpringModel(
       name,
       readConfig().database === "mongo" ? true : false,
       readConfig().database === "mysql" ? true : false
@@ -75,7 +75,7 @@ export const generateModel = async (name: string) => {
 
     try {
       mkdirSync(modelDirName);
-      generateModelFile(name, path.join(modelFilePath), readConfig);
+      await generateModelFile(name, path.join(modelFilePath), readConfig);
     } catch (e: any) {
       console.log(chalk.bold(chalk.red(e)));
     }

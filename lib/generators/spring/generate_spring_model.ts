@@ -9,7 +9,10 @@ const writeFileAsync = promisify(writeFile);
 
 const createModelDirectory = (componentName: string) => {
   const projectRoot = path.join(process.cwd());
-  const userModelPath = path.join(projectRoot, `/src/${componentName}`);
+  const userModelPath = path.join(
+    projectRoot,
+    `/src/components/${componentName}`
+  );
 
   if (!existsSync(userModelPath)) {
     mkdirSync(userModelPath);
@@ -18,7 +21,7 @@ const createModelDirectory = (componentName: string) => {
 
 const findModelDirectory = (componentName: string) => {
   const rootDir = process.cwd();
-  const possibleDirs = [`src/${componentName}`];
+  const possibleDirs = [`src/components/${componentName}`];
 
   const modelDir = possibleDirs.find((dir) =>
     existsSync(path.join(rootDir, dir))
