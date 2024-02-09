@@ -29,6 +29,9 @@ export const initDolphCli = (appname: string) => {
   const configFolderPath = path.join(process.cwd());
   const srcPath = path.join(configFolderPath, "src");
   const userConfigFilePath = path.join(configFolderPath, "dolph_cli.yaml");
+  const testPath = path.join(configFolderPath, "tests");
+  const sharedDirPath = path.join(srcPath, "shared");
+  const componentDirPath = path.join(srcPath, "components");
 
   if (!existsSync(configFolderPath)) {
     mkdirSync(configFolderPath);
@@ -36,6 +39,10 @@ export const initDolphCli = (appname: string) => {
 
   if (!existsSync(srcPath)) {
     mkdirSync(srcPath);
+  }
+
+  if (!existsSync(testPath)) {
+    mkdirSync(testPath);
   }
 
   const defaultConfig: DefaultConfig = {
@@ -85,7 +92,7 @@ export const initDolphCli = (appname: string) => {
         const comment =
           "# this is an auto-generated file, please do not edit manually\n";
 
-        if ((replies.routing = "spring")) {
+        if (replies.routing === "spring") {
           replies.paradigm = "oop";
           replies.language = "ts";
         }
@@ -104,6 +111,15 @@ export const initDolphCli = (appname: string) => {
         writeDolphConfig();
         writePackageJsonFile(projectName, userConfig.language);
         writeGitignore();
+
+        if (userConfig.routing === "spring") {
+          if (!existsSync(componentDirPath)) {
+            mkdirSync(componentDirPath);
+          }
+          if (!existsSync(sharedDirPath)) {
+            mkdirSync(sharedDirPath);
+          }
+        }
 
         dolphMsg.infoBlue(
           "dolph configurations have been initialized successfully ✨."

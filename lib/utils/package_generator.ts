@@ -11,29 +11,30 @@ import { addServerFile } from "../registers/server_file_routes.js";
 import { dolphMsg } from "../helpers/messages.js";
 import { generateComponent } from "../generators/spring/generate_spring_component.js";
 import { addComponentToServerFile } from "../registers/register_component.js";
+import { addControllerInComponentFIle } from "../registers/register_controllers_in_components.js";
 
 export const packageGenerator = () => {
   program
     .command("generate")
     .alias("g")
     .option(
-      "-s, --service" + chalk.bold(chalk.blue("<name>")),
+      "-s, --service" + chalk.bold(chalk.blue(" <name>")),
       "Generates a dolphjs service file."
     )
     .option(
-      "-c, --controller" + chalk.bold(chalk.blue("<name>")),
+      "-c, --controller" + chalk.bold(chalk.blue(" <name>")),
       "Generates a dolphjs controller file."
     )
     .option(
-      "-r, --route" + chalk.bold(chalk.blue("<name>")),
+      "-r, --route" + chalk.bold(chalk.blue(" <name>")),
       "Generates a dolphjs routes file."
     )
     .option(
-      "-m, --model" + chalk.bold(chalk.blue("<name>")),
+      "-m, --model" + chalk.bold(chalk.blue(" <name>")),
       "Generates a dolphjs models file."
     )
     .option(
-      "-com, --component" + chalk.bold(chalk.blue("<name>")),
+      "-com, --component" + chalk.bold(chalk.blue(" <name>")),
       "Generates a dolphjs spring component file."
     )
     .option(
@@ -92,6 +93,7 @@ export const packageGenerator = () => {
             addServerFile(readConfig);
           } else {
             generateComponent(value.toString());
+            addControllerInComponentFIle(value.toString());
             addComponentToServerFile(value.toString());
           }
         }
