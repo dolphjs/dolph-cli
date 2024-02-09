@@ -57,7 +57,7 @@ export const generateComponent = async (name: string) => {
   const componentFilePath = path.join(componentDir + `/${name}.component.ts`);
 
   try {
-    await generateSpringComponentFile(name, path.join(componentFilePath));
+    generateSpringComponentFile(name, path.join(componentFilePath));
     dolphMsg.info(
       `${chalk.blue(
         `${name}.component.ts`
