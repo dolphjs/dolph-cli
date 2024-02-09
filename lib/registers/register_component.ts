@@ -57,19 +57,21 @@ dolph.start();
       const newComponentInstance = `${capitalizedString}Component`;
 
       if (!fileContent.includes(importStatement)) {
-        const updatedContent = `
-        ${importStatement}\n${fileContent}}`;
+        const updatedContent = `${importStatement}\n${fileContent}`;
         writeFileSync(serverPath, updatedContent);
       }
 
       if (fileContent.includes(`const dolph`)) {
         // add new controller class to the existing array
         const routesArrayMatch = fileContent.match(
-          /const dolph = new DolphFactory\[([\s\S]]+?)\];/
+          /const dolph = new DolphFactory\(([^)]+)\);/
         );
 
         if (routesArrayMatch) {
-          const existingCode = routesArrayMatch[1].trim();
+          const existingCode =
+            routesArrayMatch && routesArrayMatch[1]
+              ? routesArrayMatch[1].trim()
+              : "";
 
           let fileContents: any;
 

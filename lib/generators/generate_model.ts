@@ -3,6 +3,7 @@ import path from "path";
 import chalk from "chalk";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveModelContent } from "./resolvers/resolve_model_content.js";
+import { generateModel as generateSpringModel } from "./spring/generate_spring_model.js";
 
 const createModelDirectory = () => {
   const projectRoot = path.join(process.cwd());
@@ -47,39 +48,47 @@ export const generateModelFile = async (
 };
 
 export const generateModel = async (name: string) => {
-  if (!name) chalk.bold(chalk.red("Model extension or name is required! 🤨"));
-
-  let modelDir = findModelDirectory();
-
-  if (!modelDir) {
-    //TODO: create one if it doesn't exist
-
-    // console.log(chalk.bold(chalk.red("Model directory doesn't exist 🤨")));
-    // return;
-    createModelDirectory();
-    modelDir = findModelDirectory();
-  }
-
-  const modelDirName = path.join(modelDir, name);
-
-  const modelFilePath = path.join(
-    modelDirName + `/${name}.model.${readConfig().language}`
-  );
-
-  try {
-    // Create the generate controller path
-    mkdirSync(modelDirName);
-
-    //TODO: if no index.ts file, create one too
-
-    generateModelFile(
+  if (readConfig().routing === "spring") {
+    generateSpringModel(
       name,
-      path.join(modelFilePath),
-      readConfig
-      // modelDirName,
+      readConfig().database === "mongo" ? true : false,
+      readConfig().database === "mysql" ? true : false
     );
-  } catch (e: any) {
-    console.log(chalk.bold(chalk.red(e)));
+  } else {
+    if (!name) chalk.bold(chalk.red("Model extension or name is required! 🤨"));
+
+    let modelDir = findModelDirectory();
+
+    if (!modelDir) {
+      //TODO: create one if it doesn't exist
+
+      // console.log(chalk.bold(chalk.red("Model directory doesn't exist 🤨")));
+      // return;
+      createModelDirectory();
+      modelDir = findModelDirectory();
+    }
+
+    const modelDirName = path.join(modelDir, name);
+
+    const modelFilePath = path.join(
+      modelDirName + `/${name}.model.${readConfig().language}`
+    );
+
+    try {
+      // Create the generate controller path
+      mkdirSync(modelDirName);
+
+      //TODO: if no index.ts file, create one too
+
+      generateModelFile(
+        name,
+        path.join(modelFilePath),
+        readConfig
+        // modelDirName,
+      );
+    } catch (e: any) {
+      console.log(chalk.bold(chalk.red(e)));
+    }
   }
 
   console.log(
