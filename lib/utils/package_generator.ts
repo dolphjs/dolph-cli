@@ -43,60 +43,57 @@ export const packageGenerator = () => {
     )
 
     .action(async (name: any, _options: any) => {
-      Object.entries(name).forEach(([key, value]) => {
-        // generates controller files for the paramter name
+      const promises = Object.entries(name).map(async ([key, value]) => {
         if (key && key.toLowerCase().includes("controller") && value) {
-          controllerGen.generateController(value.toString());
+          await controllerGen.generateController(value.toString());
         }
 
-        // generates service files for the paramter name
         if (key && key.toLowerCase().includes("service") && value) {
-          serviceGen.generateService(value.toString());
+          await serviceGen.generateService(value.toString());
         }
 
-        // generatess routes files for the paramter name
         if (key && key.toLowerCase().includes("route") && value) {
           if (readConfig().routing === "spring") {
             dolphMsg.errorGray("cannot create routes file for spring routing.");
           } else {
-            routesGen.generateRouter(value.toString());
-            addRoutesIndexFile(value.toString(), readConfig);
+            await routesGen.generateRouter(value.toString());
+            await addRoutesIndexFile(value.toString(), readConfig);
           }
         }
 
-        // generatess model fles for the paramter name
         if (key && key.toLowerCase().includes("model") && value) {
-          modelGen.generateModel(value.toString());
+          await modelGen.generateModel(value.toString());
           if (readConfig().database === "mysql") {
-            mysqlGen.generateConfig(value.toString());
+            await mysqlGen.generateConfig(value.toString());
           }
         }
 
         if (key && key.toLowerCase().includes("component") && value) {
-          generateComponent(value.toString());
+          await generateComponent(value.toString());
         }
 
-        // generates files for all the above options
         if (key && key.toLowerCase().includes("all") && value) {
-          modelGen.generateModel(value.toString());
+          await modelGen.generateModel(value.toString());
 
           if (readConfig().database === "mysql") {
-            mysqlGen.generateConfig(value.toString());
+            await mysqlGen.generateConfig(value.toString());
           }
 
-          serviceGen.generateService(value.toString());
-          controllerGen.generateController(value.toString());
+          await serviceGen.generateService(value.toString());
+          await controllerGen.generateController(value.toString());
 
           if (readConfig().routing === "express") {
-            routesGen.generateRouter(value.toString());
-            addRoutesIndexFile(value.toString(), readConfig);
-            addServerFile(readConfig);
+            await routesGen.generateRouter(value.toString());
+            await addRoutesIndexFile(value.toString(), readConfig);
+            await addServerFile(readConfig);
           } else {
-            generateComponent(value.toString());
-            addControllerInComponentFIle(value.toString());
-            addComponentToServerFile(value.toString());
+            await generateComponent(value.toString());
+            await addControllerInComponentFIle(value.toString());
+            await addComponentToServerFile(value.toString());
           }
         }
       });
+
+      await Promise.all(promises);
     });
 };

@@ -13,7 +13,7 @@ const findComponentsDirectory = (componentName: string) => {
   return srcDir ? path.join(rootDir, srcDir) : null;
 };
 
-export const addControllerInComponentFIle = (componentName: string) => {
+export const addControllerInComponentFIle = async (componentName: string) => {
   if (!componentName) {
     dolphMsg.errorRed("component extension or name is required! 🤨");
   }
@@ -40,6 +40,8 @@ export const addControllerInComponentFIle = (componentName: string) => {
   try {
     if (!existsSync(componentPath)) {
       const fileContent = `import { Component } from "@dolphjs/dolph/decorators";
+import { ${capitalizedString}Controller } from "./${componentName}.controller";
+
 @Component({ controllers: [${capitalizedString}Controller] })
 export class ${capitalizedString}Component {}
 `;
@@ -50,12 +52,15 @@ export class ${capitalizedString}Component {}
       const newComponentInstance = `${capitalizedString}Controller`;
 
       if (!fileContent.includes(importStatement)) {
-        const updatedContent = `${importStatement}\n\n${fileContent}`;
-        writeFileSync(componentPath, updatedContent);
-      }
+        // If import statement is not present, add it along with the new controller
+        const updatedContents = `${importStatement}\n${fileContent.replace(
+          /@Component\(\s*{\s*controllers:\s*\[([^\]]*)\]\s*}\s*\)/,
+          `@Component({ controllers: [${newComponentInstance}] })`
+        )}`;
 
-      if (fileContent.includes(`const dolph`)) {
-        // add new controller class to the existing array
+        writeFileSync(componentPath, updatedContents);
+      } else if (fileContent.includes(`const dolph`)) {
+        // If import statement is present and contains `const dolph`
         const controllersArrayMatch = fileContent.match(
           /@Component\(\s*{\s*controllers:\s*\[([^\]]*)\]\s*}\s*\)/
         );
@@ -81,10 +86,11 @@ export class ${capitalizedString}Component {}
       }
     }
     dolphMsg.info(
-      `registerd ${capitalizedString}Controller in ${capitalizedString}Component`
+      `registered ${capitalizedString}Controller in ${capitalizedString}Component`
     );
     process.exit(0);
-  } catch (e: any) {
-    dolphMsg.errorRed(e.toString());
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
   }
 };
