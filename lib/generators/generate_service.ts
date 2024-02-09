@@ -57,52 +57,52 @@ export const generateService = async (name: string) => {
       readConfig().database === "mongo" ? true : false,
       readConfig().database === "mysql" ? true : false
     );
-  }
-  {
-    if (!name)
-      chalk.bold(chalk.red("Service extension or name is required! 🤨"));
+  } else {
+    {
+      if (!name)
+        chalk.bold(chalk.red("Service extension or name is required! 🤨"));
 
-    let serviceDir = findServiceDirectory();
+      let serviceDir = findServiceDirectory();
 
-    if (!serviceDir) {
-      //TODO: create one if it doesn't exist
+      if (!serviceDir) {
+        //TODO: create one if it doesn't exist
 
-      // console.log(chalk.bold(chalk.red("Service directory doesn't exist 🤨")));
-      // return;
-      createServiceDirectory();
-      serviceDir = findServiceDirectory();
-    }
-
-    const serviceDirName = path.join(serviceDir, name);
-
-    const serviceFilePath = path.join(
-      serviceDirName + `/${name}.service.${readConfig().language}`
-    );
-
-    try {
-      // Create the generate controller path
-      if (readConfig().generateFolder === "true" || true) {
-        mkdirSync(serviceDirName);
+        // console.log(chalk.bold(chalk.red("Service directory doesn't exist 🤨")));
+        // return;
+        createServiceDirectory();
+        serviceDir = findServiceDirectory();
       }
 
-      //TODO: if no index.ts file, create one too
+      const serviceDirName = path.join(serviceDir, name);
 
-      generateServiceFile(
-        name,
-        path.join(serviceFilePath),
-        readConfig
-        // serviceDirName,
+      const serviceFilePath = path.join(
+        serviceDirName + `/${name}.service.${readConfig().language}`
       );
-    } catch (e: any) {
-      console.log(chalk.bold(chalk.red(e)));
-    }
-  }
 
-  console.log(
-    `${chalk.bold(
-      chalk.green(
-        `${name}.service.${readConfig().language} generated successfully! 🙃`
-      )
-    )}`
-  );
+      try {
+        // Create the generate controller path
+        if (readConfig().generateFolder === "true" || true) {
+          mkdirSync(serviceDirName);
+        }
+
+        //TODO: if no index.ts file, create one too
+
+        generateServiceFile(
+          name,
+          path.join(serviceFilePath),
+          readConfig
+          // serviceDirName,
+        );
+      } catch (e: any) {
+        console.log(chalk.bold(chalk.red(e)));
+      }
+    }
+    console.log(
+      `${chalk.bold(
+        chalk.green(
+          `${name}.service.${readConfig().language} generated successfully! 🙃`
+        )
+      )}`
+    );
+  }
 };

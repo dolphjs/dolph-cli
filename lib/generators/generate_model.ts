@@ -89,13 +89,13 @@ export const generateModel = async (name: string) => {
     } catch (e: any) {
       console.log(chalk.bold(chalk.red(e)));
     }
-  }
 
-  console.log(
-    `${chalk.bold(
-      chalk.green(
-        `${name}.model.${readConfig().language} generated successfully! 🙃`
-      )
-    )}`
-  );
+    console.log(
+      `${chalk.bold(
+        chalk.green(
+          `${name}.model.${readConfig().language} generated successfully! 🙃`
+        )
+      )}`
+    );
+  }
 };

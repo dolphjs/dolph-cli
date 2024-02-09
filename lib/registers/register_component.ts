@@ -68,18 +68,13 @@ dolph.start();
         );
 
         if (routesArrayMatch) {
-          const existingCode =
-            routesArrayMatch && routesArrayMatch[1]
-              ? routesArrayMatch[1].trim()
-              : "";
+          const existingCode = routesArrayMatch[1].trim();
 
           let fileContents: any;
 
           fileContents = fileContent.replace(
             existingCode,
-            `${
-              existingCode.length > 0 ? existingCode + ", " : ""
-            }${newComponentInstance}`
+            ` ${existingCode ? existingCode + ", " : ""}${newComponentInstance}`
           );
 
           const updatedContents = `${importStatement}\n${fileContents}`;
