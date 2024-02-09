@@ -3,6 +3,9 @@ import path from "path";
 import chalk from "chalk";
 import { generateSpringController } from "../../generators/templates/spring_controller_template.js";
 import { dolphMsg } from "../../helpers/messages.js";
+import { promisify } from "util";
+
+const writeFileAsync = promisify(writeFile);
 
 const createControllerDirectory = (componentName: string) => {
   const projectRoot = path.join(process.cwd());
@@ -28,19 +31,21 @@ export const generateSpringControllerFile = async (
   componentName: string,
   controllerDir: string
 ) => {
-  await writeFile(
-    controllerDir,
-    generateSpringController(componentName),
-    (error) => {
-      if (error) {
-        dolphMsg.errorRed(error.toString());
-      }
-    }
-  );
+  try {
+    await writeFileAsync(
+      controllerDir,
+      generateSpringController(componentName)
+    );
+  } catch (error) {
+    dolphMsg.errorRed(error.toString());
+  }
 };
 
 export const generateController = async (name: string) => {
-  if (!name) dolphMsg.errorRed("controller extension or name is required! 🤨");
+  if (!name) {
+    dolphMsg.errorRed("Controller extension or name is required! 🤨");
+    return;
+  }
 
   let controllerDir = findControllerDirectory(name);
 
@@ -54,14 +59,13 @@ export const generateController = async (name: string) => {
   );
 
   try {
-    generateSpringControllerFile(name, path.join(controllerFilePath));
+    await generateSpringControllerFile(name, path.join(controllerFilePath));
+    dolphMsg.info(
+      `${chalk.blue(
+        `${name}.controller.ts`
+      )} generated successfully for ${chalk.blue(`${name}`)} component.`
+    );
   } catch (e: any) {
     dolphMsg.errorRed(e);
   }
-
-  dolphMsg.info(
-    `${chalk.blue(
-      `${name}.controller.ts`
-    )} generated successfully for ${chalk.blue(`${name}`)} component.`
-  );
 };

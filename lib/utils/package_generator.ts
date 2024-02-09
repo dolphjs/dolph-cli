@@ -99,16 +99,5 @@ export const packageGenerator = () => {
           }
         }
       });
-
-      //   const controllerName = controller ? `${controller}` : undefined;
-      //   const serviceName = service ? `${service}` : undefined;
-      //   const modelName = model ? `${model}` : undefined;
-      //   const routesName = routes ? `${routes}` : undefined;
-      //   const interfacesName = interfaces ? `${interfaces}` : undefined;
-      //   const helperName = helper ? `${helper}` : undefined;
-
-      //   if (controllerName) {
-      //     controllerGen.generateController(controllerName);
-      //   }
     });
 };

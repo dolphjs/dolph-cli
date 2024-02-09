@@ -3,6 +3,9 @@ import path from "path";
 import chalk from "chalk";
 import { generateSpringService } from "../../generators/templates/spring_service_template.js";
 import { dolphMsg } from "../../helpers/messages.js";
+import { promisify } from "util";
+
+const writeFileAsync = promisify(writeFile);
 
 const createServiceDirectory = (componentName: string) => {
   const projectRoot = path.join(process.cwd());
@@ -30,15 +33,14 @@ export const generateSpringServiceFile = async (
   isMongo: boolean,
   isMySql: boolean
 ) => {
-  await writeFile(
-    serviceDir,
-    generateSpringService(componentName, isMongo, isMySql),
-    (error) => {
-      if (error) {
-        dolphMsg.errorRed(error.toString());
-      }
-    }
-  );
+  try {
+    await writeFileAsync(
+      serviceDir,
+      generateSpringService(componentName, isMongo, isMySql)
+    );
+  } catch (error) {
+    dolphMsg.errorRed(error.toString());
+  }
 };
 
 export const generateService = async (
@@ -46,7 +48,10 @@ export const generateService = async (
   isMongo: boolean,
   isMySql: boolean
 ) => {
-  if (!name) dolphMsg.errorRed("service extension or name is required! 🤨");
+  if (!name) {
+    dolphMsg.errorRed("Service extension or name is required! 🤨");
+    return;
+  }
 
   let serviceDir = findServiceDirectory(name);
 
@@ -58,19 +63,18 @@ export const generateService = async (
   const serviceFilePath = path.join(serviceDir + `/${name}.service.ts`);
 
   try {
-    generateSpringServiceFile(
+    await generateSpringServiceFile(
       name,
       path.join(serviceFilePath),
       isMongo,
       isMySql
     );
+    dolphMsg.info(
+      `${chalk.blue(
+        `${name}.service.ts`
+      )} generated successfully for ${chalk.blue(`${name}`)} component.`
+    );
   } catch (e: any) {
     dolphMsg.errorRed(e);
   }
-
-  dolphMsg.info(
-    `${chalk.blue(
-      `${name}.service.ts`
-    )} generated successfully for ${chalk.blue(`${name}`)} component.`
-  );
 };

@@ -1,9 +1,12 @@
 import { existsSync, mkdirSync, writeFile } from "fs";
 import path from "path";
 import chalk from "chalk";
+import { promisify } from "util";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { resolveControllerContent } from "./resolvers/resolve_controller_content.js";
 import { generateController as generateSpringController } from "./spring/generate_spring_controller.js";
+
+const writeFileAsync = promisify(writeFile);
 
 const createControllerDirectory = () => {
   const projectRoot = path.join(process.cwd());
@@ -14,19 +17,9 @@ const createControllerDirectory = () => {
   }
 };
 
-// removed other possible dirs to enforce dolphjs style guide
 const findControllerDirectory = () => {
   const rootDir = process.cwd();
-  const possibleDirs = [
-    "/src/controllers",
-    // "/src/Controllers",
-    // "/src/controller",
-    // "/src/Controller",
-    // "/Controller",
-    // "/Controllers",
-    // "/controllers",
-    // "/controller",
-  ];
+  const possibleDirs = ["/src/controllers"];
 
   const controllerDir = possibleDirs.find((dir) =>
     existsSync(path.join(rootDir, dir))
@@ -39,55 +32,11 @@ export const generateControllerFile = async (
   controllerDir: string,
   readConfig: any
 ) => {
-  await writeFile(
-    controllerDir,
-    resolveControllerContent(readConfig, name),
-    (error) => {
-      if (error) {
-        console.log(chalk.bold(chalk.red(error.toString())));
-      }
-    }
-  );
-};
-
-export const generateController = async (name: string) => {
-  if (readConfig().routing === "spring") {
-    generateSpringController(name);
-  } else {
-    if (!name)
-      chalk.bold(chalk.red("Controller extension or name is required! 🤨"));
-
-    let controllerDir = findControllerDirectory();
-
-    if (!controllerDir) {
-      createControllerDirectory();
-      controllerDir = findControllerDirectory();
-    }
-
-    const controllerDirName = path.join(controllerDir, name);
-
-    const controllerFilePath = path.join(
-      controllerDirName + `/${name}.controller.${readConfig().language}`
+  try {
+    await writeFileAsync(
+      controllerDir,
+      resolveControllerContent(readConfig, name)
     );
-
-    try {
-      // Create the generate controller path
-      if (readConfig().generateFolder === "true" || true) {
-        mkdirSync(controllerDirName);
-      }
-
-      //TODO: if no index.ts file, create one too
-
-      generateControllerFile(
-        name,
-        path.join(controllerFilePath),
-        readConfig
-        // controllerDirName,
-      );
-    } catch (e: any) {
-      console.log(chalk.bold(chalk.red(e)));
-    }
-
     console.log(
       `${chalk.bold(
         chalk.green(
@@ -97,5 +46,42 @@ export const generateController = async (name: string) => {
         )
       )}`
     );
+  } catch (error) {
+    console.log(chalk.bold(chalk.red(error.toString())));
+  }
+};
+
+export const generateController = async (name: string) => {
+  if (readConfig().routing === "spring") {
+    generateSpringController(name);
+  } else {
+    if (!name) {
+      console.log(
+        chalk.bold(chalk.red("Controller extension or name is required! 🤨"))
+      );
+      return;
+    }
+
+    let controllerDir = findControllerDirectory();
+
+    if (!controllerDir) {
+      createControllerDirectory();
+      controllerDir = findControllerDirectory();
+    }
+
+    const controllerDirName = path.join(controllerDir, name);
+    const controllerFilePath = path.join(
+      controllerDirName + `/${name}.controller.${readConfig().language}`
+    );
+
+    try {
+      if (readConfig().generateFolder === "true" || true) {
+        mkdirSync(controllerDirName);
+      }
+
+      generateControllerFile(name, path.join(controllerFilePath), readConfig);
+    } catch (e: any) {
+      console.log(chalk.bold(chalk.red(e)));
+    }
   }
 };
