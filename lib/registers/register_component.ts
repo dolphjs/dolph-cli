@@ -22,7 +22,7 @@ const findSrcDirectory = () => {
   return srcDir ? path.join(rootDir, srcDir) : null;
 };
 
-export const addComponentToServerFile = (componentName: string) => {
+export const addComponentToServerFile = async (componentName: string) => {
   if (!componentName) {
     dolphMsg.errorRed("component extension or name is required! 🤨");
   }
