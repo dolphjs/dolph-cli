@@ -1,10 +1,3 @@
-there are two types  of projects: 
-and the large only that supports the CLI options
-
-- the large and
-- the small
-
-
 In the future, one config file should do, change directory name to something like this: user.controller.ts
 
 limit call  of readConfig to speed up the process
@@ -12,5 +5,3 @@ limit call  of readConfig to speed up the process
 add dolph build and test for javascript files
 add more details in the stat command
 update readme to tell user they need to install ts-node and swc or include download of peer dependencies.
-
-primary!! fix the config file issue with spring routing

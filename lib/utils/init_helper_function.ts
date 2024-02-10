@@ -9,6 +9,8 @@ import { writeDolphConfig } from "./write_dolph_config.js";
 import { writePackageJsonFile } from "./write_package_json.js";
 import { writeGitignore } from "./write_gitignore.js";
 import { dolphMsg } from "../helpers/messages.js";
+import { addServerFile as addSpringServerFile } from "../registers/server_file_spring.js";
+import { addServerFile as addExpressServerFile } from "../registers/server_file_express.js";
 
 export const initDolphCli = (appname: string) => {
   let projectName = appname;
@@ -119,6 +121,7 @@ export const initDolphCli = (appname: string) => {
           if (!existsSync(sharedDirPath)) {
             mkdirSync(sharedDirPath);
           }
+          addSpringServerFile(userConfig.database, "");
         }
 
         dolphMsg.infoBlue(

@@ -7,7 +7,7 @@ import * as modelGen from "../generators/generate_model.js";
 import * as mysqlGen from "../generators/generate_mysql.js";
 import { readConfig } from "./read_user_config_path.js";
 import { addRoutesIndexFile } from "../registers/register_routes.js";
-import { addServerFile } from "../registers/server_file_routes.js";
+import { addServerFile } from "../registers/server_file_express.js";
 import { dolphMsg } from "../helpers/messages.js";
 import { generateComponent } from "../generators/spring/generate_spring_component.js";
 import { addComponentToServerFile } from "../registers/register_component.js";
