@@ -14,7 +14,7 @@ export const writeConfig = (config: any) => {
     console.log(
       chalk.bold(
         chalk.red(
-          "Error encountered reading config file, please run 'dolph tr' to initialize config file 🥹"
+          "Error encountered reading config file, please run 'dolph cf' to initialize config file 🥹"
         )
       )
     );
