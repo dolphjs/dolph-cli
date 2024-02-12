@@ -142,7 +142,7 @@ export const startProdApp = () => {
     });
   }
 
-  indexFilePath = join(getRootDirectory(), "app", `server.js`);
+  indexFilePath = join(getRootDirectory(), "app", "src", `server.js`);
 
   if (fileExtension === "js") {
     indexFilePath = join(getRootDirectory(), "src", `server.js`);
