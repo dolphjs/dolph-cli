@@ -106,8 +106,8 @@ export const initDolphCli = (appname: string) => {
         writeFileSync(userConfigFilePath, yamlString, "utf8");
 
         if (userConfig.language === "ts") {
-          writeSwcrc();
-          writeTsConfigFile();
+          writeSwcrc(userConfig.routing === "spring" ? true : false);
+          writeTsConfigFile(userConfig.routing === "spring" ? true : false);
         }
 
         writeDolphConfig();
