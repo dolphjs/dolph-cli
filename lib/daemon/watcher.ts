@@ -7,8 +7,8 @@ import { join } from "path";
 import _ from "lodash";
 
 let fileExtension = "";
-
 let indexFilePath = "";
+let child;
 
 export const startApp = () => {
   console.log(
@@ -32,26 +32,29 @@ export const startApp = () => {
     spawnArgs = [indexFilePath];
   }
 
-  console.log(
-    `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
-      "starting dolph server ..."
-    )}`
-  );
+  if (child) {
+    // If child process is already running, gracefully close it before restarting
+    child.kill("SIGTERM");
+  }
 
-  const child = spawn(fileExtension === "ts" ? "ts-node" : "node", spawnArgs, {
+  child = spawn(fileExtension === "ts" ? "ts-node" : "node", spawnArgs, {
     stdio: "inherit",
   });
 
   child.on("error", (err) => {
-    `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(`${err}`)}`;
+    console.error(
+      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(`${err}`)}`
+    );
     process.exit(1);
   });
 
   child.on("close", (code: number) => {
     if (code === 1) {
-      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-        "exiting watch mode ..."
-      )}`;
+      console.error(
+        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+          "exiting watch mode ..."
+        )}`
+      );
       process.exit(1);
     }
   });
@@ -119,7 +122,11 @@ export const startProdApp = () => {
     indexFilePath = join(getRootDirectory(), "src", `server.ts`);
     const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
 
-    const child = spawn("swc", spawnArgs, {
+    if (child) {
+      child.kill("SIGTERM");
+    }
+
+    child = spawn("swc", spawnArgs, {
       stdio: "inherit",
     });
 
