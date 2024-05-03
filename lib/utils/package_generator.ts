@@ -12,6 +12,7 @@ import { dolphMsg } from "../helpers/messages.js";
 import { generateComponent } from "../generators/spring/generate_spring_component.js";
 import { addComponentToServerFile } from "../registers/register_component.js";
 import { addControllerInComponentFIle } from "../registers/register_controllers_in_components.js";
+import { generateSocket } from "../generators/spring/generate_spring_socket_service.js";
 
 export const packageGenerator = () => {
   program
@@ -36,6 +37,10 @@ export const packageGenerator = () => {
     .option(
       "-com, --component" + chalk.bold(chalk.blue(" <name>")),
       "Generates a dolphjs spring component file."
+    )
+    .option(
+      "-soc, --socket" + chalk.bold(chalk.blue(" <name> ")),
+      "Generate a dolphjs socket service and component."
     )
     .option(
       "-a, --all" + chalk.bold(chalk.blue(" <name> ")),
@@ -66,6 +71,13 @@ export const packageGenerator = () => {
           if (readConfig().database === "mysql") {
             await mysqlGen.generateConfig(value.toString());
           }
+        }
+
+        if (key && key.toLowerCase().includes("socket") && value) {
+          // create socket service
+          await generateSocket(value.toString());
+
+          // create socket component
         }
 
         if (key && key.toLowerCase().includes("component") && value) {

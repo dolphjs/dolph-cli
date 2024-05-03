@@ -11,8 +11,7 @@ export const generateSpringService = (
   const className = capitalizeFirstLetter(componentName) + "Service";
 
   if (isMongo && isMySql) {
-    template = `
-import { DolphServiceHandler } from "@dolphjs/dolph/classes";
+    template = `import { DolphServiceHandler } from "@dolphjs/dolph/classes";
 import { Dolph } from "@dolphjs/dolph/common";
 import { InjectMongo, InjectMySQL } from "@dolphjs/dolph/decorators";
 import { Model } from "mongoose";
@@ -40,8 +39,7 @@ export class ${className} extends DolphServiceHandler<Dolph> {
   }
 
   if (isMongo) {
-    template = `
-import { DolphServiceHandler } from "@dolphjs/dolph/classes";
+    template = `import { DolphServiceHandler } from "@dolphjs/dolph/classes";
 import { Dolph } from "@dolphjs/dolph/common";
 import { InjectMongo} from "@dolphjs/dolph/decorators";
 import { Model } from "mongoose";
@@ -65,8 +63,7 @@ export class ${className} extends DolphServiceHandler<Dolph> {
   }
 
   if (isMySql) {
-    template = `
-import { DolphServiceHandler } from "@dolphjs/dolph/classes";
+    template = `import { DolphServiceHandler } from "@dolphjs/dolph/classes";
 import { Dolph } from "@dolphjs/dolph/common";
 import { InjectMySQL } from "@dolphjs/dolph/decorators";
 import { ModelStatic, Model } from "sequelize";
@@ -86,8 +83,7 @@ export class ${className} extends DolphServiceHandler<Dolph> {
   }
 
   if (!isMongo && !isMySql) {
-    template = `
-import { DolphServiceHandler } from "@dolphjs/dolph/classes";
+    template = `import { DolphServiceHandler } from "@dolphjs/dolph/classes";
 import { Dolph } from "@dolphjs/dolph/common";
 
 
