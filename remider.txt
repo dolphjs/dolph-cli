@@ -2,8 +2,6 @@ In the future, one config file should do, change directory name to something lik
 
 limit call  of readConfig to speed up the process
 
-add dolph build and test for javascript files
+add dolph test for javascript files
 add more details in the stat command
 update readme to tell user they need to install ts-node and swc or include download of peer dependencies.
-
-UPDATE tsconfig and swcrc files for spring routing
