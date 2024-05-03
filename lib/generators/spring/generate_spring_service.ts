@@ -41,8 +41,8 @@ export const generateSpringServiceFile = async (
       serviceDir,
       generateSpringService(componentName, isMongo, isMySql)
     );
-  } catch (error) {
-    dolphMsg.errorRed(error.toString());
+  } catch (error: any) {
+    dolphMsg.errorRed(error.message.toString());
   }
 };
 
