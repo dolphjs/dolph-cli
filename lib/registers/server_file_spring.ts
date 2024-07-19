@@ -38,7 +38,7 @@ import { ${capitalizedString}Component } from "./components/${name}/${name}.comp
 `;
   } else if (database === "mongo") {
     importStatement = `import { DolphFactory } from "@dolphjs/dolph";
-import { autoInitMySql } from "@dolphjs/dolph/packages";`;
+`;
   }
 
   if (database === "mysql" && name) {

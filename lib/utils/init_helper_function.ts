@@ -128,7 +128,7 @@ export const initDolphCli = (appname: string) => {
           "dolph configurations have been initialized successfully ✨."
         );
 
-        dolphMsg.infoYellow(
+        dolphMsg.infoBlue(
           "run `yarn install` to install dependencies in project directory and start building 🚀."
         );
 

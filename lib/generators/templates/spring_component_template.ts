@@ -7,7 +7,7 @@ export const generateSpringComponent = (componentName: string) => {
 
   const template = `import { Component } from "@dolphjs/dolph/decorators";
 
-@Component({ controllers: [] })
+@Component({ controllers: [], services: [] })
 export class ${className} {}
 `;
 
