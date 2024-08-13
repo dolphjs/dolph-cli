@@ -33,8 +33,12 @@ export const startApp = () => {
   }
 
   if (child) {
+    child.on("exit", () => {
+      child = null;
+    });
     // If child process is already running, gracefully close it before restarting
     child.kill("SIGTERM");
+    // child.kill("SIGKILL");
   }
 
   child = spawn(fileExtension === "ts" ? "ts-node" : "node", spawnArgs, {
@@ -55,6 +59,7 @@ export const startApp = () => {
           "exiting watch mode ..."
         )}`
       );
+      child = null;
       process.exit(1);
     }
   });
@@ -123,6 +128,9 @@ export const startProdApp = () => {
     const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
 
     if (child) {
+      child.on("exit", () => {
+        child = null;
+      });
       child.kill("SIGTERM");
     }
 
