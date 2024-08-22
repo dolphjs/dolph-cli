@@ -66,127 +66,148 @@ export const startApp = () => {
 };
 
 export const buildApp = () => {
-  fileExtension = readConfig().language;
+  return new Promise<void>((resolve, reject) => {
+    fileExtension = readConfig().language;
 
-  if (fileExtension === "ts") {
-    console.log(
-      `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
-        "compiling to javascript ..."
-      )}`
-    );
+    if (fileExtension === "ts") {
+      console.log(
+        `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
+          "compiling to javascript ..."
+        )}`
+      );
 
-    indexFilePath = join(getRootDirectory(), "src", "server.ts");
-    const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
+      indexFilePath = join(getRootDirectory(), "src", "server.ts");
+      const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
 
-    const child = spawn("swc", spawnArgs, {
-      stdio: "inherit",
-    });
+      const child = spawn("swc", spawnArgs, {
+        stdio: "inherit",
+      });
+
+      child.on("error", (err) => {
+        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+          `${err}`
+        )}`;
+        // process.exit(1);
+        reject(err);
+      });
+
+      child.on("close", (code: number) => {
+        if (code === 1) {
+          console.log(
+            `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+              "exiting compilation ..."
+            )}`
+          );
+          reject(new Error("Compilation failed ..."));
+        } else {
+          console.log(
+            `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
+              "compilation successful"
+            )}`
+          );
+          resolve();
+        }
+      });
+    } else {
+      console.log(
+        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+          "cannot compile javascript file, exiting compilation ..."
+        )}`
+      );
+      reject(new Error("Cannot compile JavaScript file"));
+    }
+  });
+};
+
+export const startProdApp = async () => {
+  try {
+    fileExtension = readConfig().language;
+
+    if (fileExtension === "ts") {
+      console.log(
+        `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
+          "compiling to javascript ..."
+        )}`
+      );
+
+      indexFilePath = join(getRootDirectory(), "src", `server.ts`);
+      const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
+
+      if (child) {
+        child.on("exit", () => {
+          child = null;
+        });
+        child.kill("SIGTERM");
+      }
+
+      child = spawn("swc", spawnArgs, {
+        stdio: "inherit",
+      });
+
+      child.on("error", (err) => {
+        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+          `${err}`
+        )}`;
+        process.exit(1);
+      });
+
+      child.on("close", (code: number) => {
+        if (code === 1) {
+          console.log(
+            `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+              "exiting compilation ..."
+            )}`
+          );
+          process.exit(1);
+        }
+      });
+
+      await new Promise<void>((resolve, reject) => {
+        child.on("close", (code: number) => {
+          if (code === 0) {
+            resolve();
+          } else {
+            reject(new Error("Compilation failed"));
+          }
+        });
+      });
+    }
+
+    indexFilePath =
+      fileExtension === "ts"
+        ? join(getRootDirectory(), "app", "src", "server.js")
+        : join(getRootDirectory(), "src", "server.js");
 
     console.log(
       `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
-        "compilation successful"
+        "starting dolph server ..."
       )}`
     );
 
-    child.on("error", (err) => {
-      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-        `${err}`
-      )}`;
-      process.exit(1);
-    });
-
-    child.on("close", (code: number) => {
-      if (code === 1) {
-        console.log(
-          `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-            "exiting compilation ..."
-          )}`
-        );
-        process.exit(1);
-      }
-    });
-  } else {
-    console.log(
-      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-        "cannot compile javascript file, exiting compilation ..."
-      )}`
-    );
-  }
-};
-
-export const startProdApp = () => {
-  fileExtension = readConfig().language;
-
-  if (fileExtension === "ts") {
-    console.log(
-      `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
-        "compiling to javascript ..."
-      )}`
-    );
-
-    indexFilePath = join(getRootDirectory(), "src", `server.ts`);
-    const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
-
-    if (child) {
-      child.on("exit", () => {
-        child = null;
-      });
-      child.kill("SIGTERM");
-    }
-
-    child = spawn("swc", spawnArgs, {
+    const child2 = spawn("node", [indexFilePath], {
       stdio: "inherit",
     });
 
-    child.on("error", (err) => {
+    child2.on("error", (err) => {
       `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
         `${err}`
       )}`;
       process.exit(1);
     });
 
-    child.on("close", (code: number) => {
+    child2.on("close", (code: number) => {
       if (code === 1) {
-        console.log(
-          `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-            "exiting compilation ..."
-          )}`
-        );
+        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+          "exiting watch mode ..."
+        )}`;
+
         process.exit(1);
       }
     });
-  }
-
-  indexFilePath = join(getRootDirectory(), "app", "src", `server.js`);
-
-  if (fileExtension === "js") {
-    indexFilePath = join(getRootDirectory(), "src", `server.js`);
-  }
-
-  console.log(
-    `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
-      "starting dolph server ..."
-    )}`
-  );
-
-  const child2 = spawn("node", [indexFilePath], {
-    stdio: "inherit",
-  });
-
-  child2.on("error", (err) => {
-    `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(`${err}`)}`;
+  } catch (e: any) {
+    console.error(e);
     process.exit(1);
-  });
-
-  child2.on("close", (code: number) => {
-    if (code === 1) {
-      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-        "exiting watch mode ..."
-      )}`;
-
-      process.exit(1);
-    }
-  });
+  }
 };
 
 const watcher = chokidar.watch([], {

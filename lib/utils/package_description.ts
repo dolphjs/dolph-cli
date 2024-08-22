@@ -3,7 +3,7 @@ import { program } from "commander";
 
 export const packageDescription = () => {
   program
-    .version("1.2.2")
+    .version("1.2.4")
     .description(
       chalk.cyan(
         "The dolph-cli is a tool for efficient initialization and management of a dolphjs project"
