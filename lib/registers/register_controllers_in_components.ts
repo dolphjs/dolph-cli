@@ -42,7 +42,7 @@ export const addControllerInComponentFIle = async (componentName: string) => {
       const fileContent = `import { Component } from "@dolphjs/dolph/decorators";
 import { ${capitalizedString}Controller } from "./${componentName}.controller";
 
-@Component({ controllers: [${capitalizedString}Controller] })
+@Component({ controllers: [${capitalizedString}Controller], services: [] })
 export class ${capitalizedString}Component {}
 `;
       writeFileSync(componentPath, fileContent);
