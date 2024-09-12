@@ -10,7 +10,7 @@ let fileExtension = "";
 let indexFilePath = "";
 let child;
 
-export const startApp = () => {
+export const startApp = (useBun = false) => {
   console.log(
     `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
       "starting dolph server ..."
@@ -41,9 +41,21 @@ export const startApp = () => {
     child.kill("SIGKILL");
   }
 
-  child = spawn(fileExtension === "ts" ? "ts-node" : "node", spawnArgs, {
-    stdio: "inherit",
-  });
+  if (useBun) {
+    console.log(
+      `${chalk.bold(chalk.green("[DOLPH INFO:] "))} ${chalk.greenBright(
+        "using Bun to start the server ..."
+      )}`
+    );
+
+    child = spawn("bun", [indexFilePath], {
+      stdio: "inherit",
+    });
+  } else {
+    child = spawn(fileExtension === "ts" ? "ts-node" : "node", spawnArgs, {
+      stdio: "inherit",
+    });
+  }
 
   child.on("error", (err) => {
     console.error(
@@ -119,7 +131,7 @@ export const buildApp = () => {
   });
 };
 
-export const startProdApp = async () => {
+export const startProdApp = async (useBun = false) => {
   try {
     fileExtension = readConfig().language;
 
@@ -184,26 +196,55 @@ export const startProdApp = async () => {
       )}`
     );
 
-    const child2 = spawn("node", [indexFilePath], {
-      stdio: "inherit",
-    });
+    if (useBun) {
+      console.log(
+        `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
+          "using Bun to start the server ..."
+        )}`
+      );
 
-    child2.on("error", (err) => {
-      `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-        `${err}`
-      )}`;
-      process.exit(1);
-    });
+      const child2 = spawn("bun", [indexFilePath], {
+        stdio: "inherit",
+      });
 
-    child2.on("close", (code: number) => {
-      if (code === 1) {
+      child2.on("error", (err) => {
         `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-          "exiting watch mode ..."
+          `${err}`
         )}`;
-
         process.exit(1);
-      }
-    });
+      });
+
+      child2.on("close", (code: number) => {
+        if (code === 1) {
+          `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+            "exiting watch mode ..."
+          )}`;
+
+          process.exit(1);
+        }
+      });
+    } else {
+      const child2 = spawn("node", [indexFilePath], {
+        stdio: "inherit",
+      });
+
+      child2.on("error", (err) => {
+        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+          `${err}`
+        )}`;
+        process.exit(1);
+      });
+
+      child2.on("close", (code: number) => {
+        if (code === 1) {
+          `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+            "exiting watch mode ..."
+          )}`;
+
+          process.exit(1);
+        }
+      });
+    }
   } catch (e: any) {
     console.error(e);
     process.exit(1);
@@ -218,9 +259,9 @@ const watcher = chokidar.watch([], {
 
 let isWatcherActive = false;
 
-const debouncedStartApp = _.debounce(startApp, 1000);
+const debouncedStartApp = _.debounce((useBun) => startApp(useBun), 1000);
 
-export const watchFile = () => {
+export const watchFile = (useBun = false) => {
   if (!isWatcherActive) {
     console.log(
       `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
@@ -241,8 +282,12 @@ export const watchFile = () => {
         "file changed" + `[${path}]`
       )}`;
 
-      if (path.endsWith(".ts") || path.endsWith(".js")) {
-        debouncedStartApp();
+      if (
+        path.endsWith(".ts") ||
+        path.endsWith(".js")
+        // path.startsWith("dolph_config")
+      ) {
+        debouncedStartApp(useBun);
       }
     });
 
