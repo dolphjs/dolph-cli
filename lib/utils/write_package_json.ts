@@ -24,7 +24,7 @@ export function writePackageJsonFile(name: string, extension: string): void {
     "clean": "rm -r app && rm -r logs"
   },
   "dependencies": {
-    "@dolphjs/dolph": "^1.3.2"
+    "@dolphjs/dolph": "^1.4.3"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.62",
@@ -55,7 +55,7 @@ export function writePackageJsonFile(name: string, extension: string): void {
     "start": "dolph start"
   },
   "dependencies": {
-    "@dolphjs/dolph": "^1.3.2"
+    "@dolphjs/dolph": "^1.4.3"
   }
 }
 `;
