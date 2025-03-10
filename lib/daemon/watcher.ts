@@ -5,52 +5,74 @@ import { getRootDirectory } from "../utils/get_root_dir_path.js";
 import { readConfig } from "../utils/read_user_config_path.js";
 import { join } from "path";
 import _ from "lodash";
+import { exec } from "child_process";
 
 let fileExtension = "";
 let indexFilePath = "";
-let child;
+let child: any = null;
+
+const killProcess = (processToKill: any) => {
+  if (processToKill) {
+    console.log(
+      `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
+        "Stopping previous Dolph server..."
+      )}`
+    );
+
+    // Windows: Use taskkill
+    if (process.platform === "win32") {
+      exec(`taskkill /PID ${processToKill.pid} /F /T`, (err) => {
+        if (err) {
+          console.error(
+            `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+              `Failed to kill process: ${err}`
+            )}`
+          );
+        }
+      });
+    } else {
+      // Linux/macOS: Kill process normally
+      processToKill.kill("SIGTERM");
+      setTimeout(() => {
+        processToKill.kill("SIGKILL");
+      }, 1000);
+    }
+  }
+};
 
 export const startApp = (useBun = false) => {
   console.log(
     `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
-      "starting dolph server ..."
+      "Starting Dolph server..."
     )}`
   );
 
   fileExtension = readConfig().language;
   indexFilePath = join(getRootDirectory(), "src", `server.${fileExtension}`);
 
-  const additionalOptions = [
+  // Kill previous process before starting a new one
+  if (child) {
+    killProcess(child);
+  }
+
+  let spawnArgs = [
     "-r",
     "tsconfig-paths/register",
     "--transpile-only",
+    indexFilePath,
   ];
-
-  let spawnArgs = [...additionalOptions, indexFilePath];
-
   if (fileExtension === "js") {
     spawnArgs = [indexFilePath];
-  }
-
-  if (child) {
-    child.on("exit", () => {
-      child = null;
-    });
-    // If child process is already running, gracefully close it before restarting
-    // child.kill("SIGTERM");
-    child.kill("SIGKILL");
   }
 
   if (useBun) {
     console.log(
       `${chalk.bold(chalk.green("[DOLPH INFO:] "))} ${chalk.greenBright(
-        "using Bun to start the server ..."
+        "Using Bun to start the server..."
       )}`
     );
 
-    child = spawn("bun", [indexFilePath], {
-      stdio: "inherit",
-    });
+    child = spawn("bun", [indexFilePath], { stdio: "inherit" });
   } else {
     child = spawn(fileExtension === "ts" ? "ts-node" : "node", spawnArgs, {
       stdio: "inherit",
@@ -68,7 +90,7 @@ export const startApp = (useBun = false) => {
     if (code === 1) {
       console.error(
         `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-          "exiting watch mode ..."
+          "Exiting watch mode..."
         )}`
       );
       child = null;
@@ -135,44 +157,20 @@ export const startProdApp = async (useBun = false) => {
   try {
     fileExtension = readConfig().language;
 
+    if (child) {
+      killProcess(child);
+    }
+
     if (fileExtension === "ts") {
       console.log(
         `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
-          "compiling to javascript ..."
+          "Compiling to JavaScript..."
         )}`
       );
 
       indexFilePath = join(getRootDirectory(), "src", `server.ts`);
       const spawnArgs = ["src", "-d", "app", "--source-maps", "--copy-files"];
-
-      if (child) {
-        child.on("exit", () => {
-          child = null;
-        });
-        child.kill("SIGTERM");
-      }
-
-      child = spawn("swc", spawnArgs, {
-        stdio: "inherit",
-      });
-
-      child.on("error", (err) => {
-        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-          `${err}`
-        )}`;
-        process.exit(1);
-      });
-
-      child.on("close", (code: number) => {
-        if (code === 1) {
-          console.log(
-            `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-              "exiting compilation ..."
-            )}`
-          );
-          process.exit(1);
-        }
-      });
+      child = spawn("swc", spawnArgs, { stdio: "inherit" });
 
       await new Promise<void>((resolve, reject) => {
         child.on("close", (code: number) => {
@@ -192,59 +190,33 @@ export const startProdApp = async (useBun = false) => {
 
     console.log(
       `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
-        "starting dolph server ..."
+        "Starting Dolph server..."
       )}`
     );
 
-    if (useBun) {
-      console.log(
-        `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
-          "using Bun to start the server ..."
+    child = useBun
+      ? spawn("bun", [indexFilePath], { stdio: "inherit" })
+      : spawn("node", [indexFilePath], { stdio: "inherit" });
+
+    child.on("error", (err) => {
+      console.error(
+        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
+          `${err}`
         )}`
       );
+      process.exit(1);
+    });
 
-      const child2 = spawn("bun", [indexFilePath], {
-        stdio: "inherit",
-      });
-
-      child2.on("error", (err) => {
-        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-          `${err}`
-        )}`;
-        process.exit(1);
-      });
-
-      child2.on("close", (code: number) => {
-        if (code === 1) {
+    child.on("close", (code: number) => {
+      if (code === 1) {
+        console.error(
           `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-            "exiting watch mode ..."
-          )}`;
-
-          process.exit(1);
-        }
-      });
-    } else {
-      const child2 = spawn("node", [indexFilePath], {
-        stdio: "inherit",
-      });
-
-      child2.on("error", (err) => {
-        `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-          `${err}`
-        )}`;
+            "Exiting production mode..."
+          )}`
+        );
         process.exit(1);
-      });
-
-      child2.on("close", (code: number) => {
-        if (code === 1) {
-          `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-            "exiting watch mode ..."
-          )}`;
-
-          process.exit(1);
-        }
-      });
-    }
+      }
+    });
   } catch (e: any) {
     console.error(e);
     process.exit(1);
@@ -265,40 +237,43 @@ export const watchFile = (useBun = false) => {
   if (!isWatcherActive) {
     console.log(
       `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
-        "watching files for changes ..."
+        "Watching files for changes..."
       )}`
     );
 
     isWatcherActive = true;
-
     fileExtension = readConfig().language;
-
     const srcDirectory = join(getRootDirectory(), "src");
-
     watcher.add(srcDirectory);
 
     watcher.on("all", (_event, path) => {
-      `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
-        "file changed" + `[${path}]`
-      )}`;
+      console.log(
+        `${chalk.bold(chalk.green("[DOLPH INFO]: "))} ${chalk.greenBright(
+          `File changed: [${path}]`
+        )}`
+      );
 
-      if (
-        path.endsWith(".ts") ||
-        path.endsWith(".js")
-        // path.startsWith("dolph_config")
-      ) {
+      if (path.endsWith(".ts") || path.endsWith(".js")) {
         debouncedStartApp(useBun);
       }
     });
 
     process.on("SIGINT", () => {
+      console.log(
+        `${chalk.bold(chalk.yellow("[DOLPH INFO]: "))} ${chalk.yellowBright(
+          "Shutting down watcher..."
+        )}`
+      );
+      if (child) {
+        killProcess(child);
+      }
       watcher.close();
       process.exit(0);
     });
   } else {
     console.log(
       `${chalk.bold(chalk.red("[DOLPH ERROR]: "))} ${chalk.redBright(
-        "watcher is already active."
+        "Watcher is already active."
       )}`
     );
   }

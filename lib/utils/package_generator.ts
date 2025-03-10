@@ -43,8 +43,16 @@ export const packageGenerator = () => {
       "Generate a dolphjs socket service and component."
     )
     .option(
+      "-res, --resolver" + chalk.bold(chalk.blue(" <name> ")),
+      "Generate a dolphjs resolver."
+    )
+    .option(
+      "-res, --resolver" + chalk.bold(chalk.blue(" <name> ")),
+      "Generate a dolphjs resolver."
+    )
+    .option(
       "-a, --all" + chalk.bold(chalk.blue(" <name> ")),
-      "Generates dolphjs controllers, routes, models and services files for the name paramter."
+      "Generates dolphjs controllers, routes, models and services files for the name parameter."
     )
 
     .action(async (name: any, _options: any) => {

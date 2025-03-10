@@ -53,6 +53,7 @@ export const initDolphCli = (appname: string) => {
     database: "mongo",
     generateFolder: true,
     routing: "express",
+    api: "rest",
   };
 
   if (!existsSync(userConfigFilePath)) {
@@ -87,6 +88,13 @@ export const initDolphCli = (appname: string) => {
             "Which dolph routing architecture would you be using? (choosing 'spring' means that you are making use of  both 'oop' & 'typescript')",
           choices: ["express", "spring"],
           default: "express",
+        },
+        {
+          type: "list",
+          name: "api",
+          message: "Will you be using REST or GraphQL to build?",
+          choices: ["graphql", "rest"],
+          default: "rest",
         },
       ])
       .then((replies) => {

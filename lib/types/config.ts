@@ -4,7 +4,10 @@ export type DefaultConfig = {
   paradigm: paradigm;
   database: dbs;
   routing: routing;
+  api: api;
 };
+
+type api = "graphql" | "rest";
 
 type dbs = "mongo" | "mysql" | "postgresql" | "other";
 
