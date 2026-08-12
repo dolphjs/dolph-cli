@@ -3,6 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as https from "https";
 import * as http from "http";
+import { spawnSync } from "child_process";
 
 import chalk from "chalk";
 
@@ -41,10 +42,6 @@ async function downloadBinary() {
     releaseUrl = `https://github.com/dolphjs/cli-v2/releases/download/v${version}/${releaseAssetName}.zip`;
   }
 
-  // Temporary - this for testing purpose.
-  if (platform === "darwin") {
-    releaseUrl = `https://github.com/dolphjs/cli_v2/releases/download/v0.1.0/dolph-x86_64-apple-darwin.tar.gz`;
-  }
 
   // Where to put the binary
   const installDir = path.join(__dirname, "..", "bin");
@@ -53,9 +50,9 @@ async function downloadBinary() {
     fs.mkdirSync(installDir, { recursive: true });
   }
 
-  //   const binaryPath = path.join(installDir, binaryName);
-
   const binaryPath = path.join(__dirname, "..", "bin", binaryName);
+  const archiveName = platform === "win32" ? "dolph.zip" : "dolph.tar.gz";
+  const archivePath = path.join(__dirname, "..", "bin", archiveName);
 
   console.log(
     `${chalk.blue("[INFO]: ")} ${chalk.blue(
@@ -64,8 +61,20 @@ async function downloadBinary() {
   );
 
   try {
-    await downloadWithRedirects(releaseUrl, binaryPath);
+    await downloadWithRedirects(releaseUrl, archivePath);
+    console.log(`${chalk.blue("[INFO]: ")} Extracting archive...`);
+    
+    if (platform === "win32") {
+      const extCmd = spawnSync("powershell", ["-command", `Expand-Archive -Path '${archivePath}' -DestinationPath '${installDir}' -Force`], { stdio: "inherit" });
+      if (extCmd.status !== 0) throw new Error("Failed to extract zip archive");
+    } else {
+      const extCmd = spawnSync("tar", ["-xzf", archivePath, "-C", installDir], { stdio: "inherit" });
+      if (extCmd.status !== 0) throw new Error("Failed to extract tar archive");
+    }
+    
+    fs.unlinkSync(archivePath);
     fs.chmodSync(binaryPath, "755");
+
     console.log(
       `${chalk.blue("[INFO]: ")} ${chalk.blue(
         `DolphJS CLI downloaded and installed successfully!`
