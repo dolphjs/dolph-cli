@@ -36,10 +36,10 @@ async function downloadBinary() {
   }
 
   const version = require("../package.json").version; // Get version from package.json
-  let releaseUrl = `https://github.com/dolphjs/cli-v2/releases/download/v${version}/${releaseAssetName}.tar.gz`;
+  let releaseUrl = `https://github.com/dolphjs/cli_v2/releases/download/v${version}/${releaseAssetName}.tar.gz`;
 
   if (platform === "win32") {
-    releaseUrl = `https://github.com/dolphjs/cli-v2/releases/download/v${version}/${releaseAssetName}.zip`;
+    releaseUrl = `https://github.com/dolphjs/cli_v2/releases/download/v${version}/${releaseAssetName}.zip`;
   }
 
 
