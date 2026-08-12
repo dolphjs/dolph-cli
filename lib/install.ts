@@ -42,10 +42,6 @@ async function downloadBinary() {
     releaseUrl = `https://github.com/dolphjs/cli-v2/releases/download/v${version}/${releaseAssetName}.zip`;
   }
 
-  // Temporary - this for testing purpose.
-  if (platform === "darwin") {
-    releaseUrl = `https://github.com/dolphjs/cli_v2/releases/download/v0.1.0/dolph-x86_64-apple-darwin.tar.gz`;
-  }
 
   // Where to put the binary
   const installDir = path.join(__dirname, "..", "bin");
