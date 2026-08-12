@@ -1,64 +1,89 @@
-# dolphjs cli
+# DolphJS CLI
 
-The dolphjs-cli is a tool used for efficient initialization and management of a dolphjs project.
+The `dolph` CLI is a powerful tool designed for the efficient initialization and management of DolphJS projects. Powered by Rust under the hood for blazing fast performance!
+
+## Installation
+
+```bash
+npm install -g @dolphjs/cli
+# or using pnpm
+pnpm add -g @dolphjs/cli
+```
 
 ## Commands
 
-**new**: the alias for this command is `n`. This command is used to initialize / start a new project. It takes the name of the project as an option
+### `new`
+
+This command is used to initialize and start a new project. It takes the name of the project as an option.
 
 ```bash
-dolph-cli new <project-name>
+dolph new <project-name>
 ```
 
-or use `' . '` in place of `<project-name>` to initialize the project in current directory.
+Or use `.` in place of `<project-name>` to initialize the project in your current directory:
+```bash
+dolph new .
+```
 
-After this, you'll be prompted with few questions which would be used to configure your dolphjs project. Navigate to the project folder and run
+After running this, you'll be prompted with interactive questions to configure your new DolphJS project (Language, Architecture, Database, etc.).
+
+### `generate` (or `g`)
+
+This command is used to quickly scaffold boilerplate files and folders with setup code. This ensures you are writing code the standard DolphJS way.
 
 ```bash
-yarn
+dolph generate [OPTIONS]
 ```
 
-to install all packages .
+**Options:**
+- `-a, --all <NAME>`: Generates all dolphjs files for the named parameter
+- `-c, --controller <NAME>`: Generates a dolphjs controller file
+- `-d, --dto <NAME>`: Generates a dolphjs dto file
+- `-e, --entity <NAME>`: Generates a dolphjs entity file
+- `-i, --input <NAME>`: Generates a dolphjs input file
+- `-k, --socket <NAME>`: Generates a dolphjs socket service and component
+- `-m, --model <NAME>`: Generates a dolphjs models file
+- `-r, --route <NAME>`: Generates a dolphjs routes file
+- `-s, --service <NAME>`: Generates a dolphjs service file
+- `-v, --resolver <NAME>`: Generates a dolphjs resolver file
+- `-y, --component <NAME>`: Generates a dolphjs spring component file
 
-**generate**: the alias for this command is `g` and is used to generate files and folders with setup code for :
+**Example Usage:**
 
-- controllers
-- services
-- models
-- routes
+To generate a full set of files (controller, service, model, routes, etc.) for a `user` feature:
+```bash
+dolph generate -a user
+```
 
-It is recommended to make use of the `generate` command when one wants to create these files because it generates code the dolphjs way. In a scenario when you want to create files for all of the above, let's say you want to write code for user logic and functionalities, use the `-a` flag, as in:
+To generate just a specific file, such as a controller:
+```bash
+dolph generate -c user
+```
+
+### `build`
+
+Builds the dolphjs typescript project into a javascript project for production.
 
 ```bash
-dolph-cli g -a user
+dolph build
 ```
 
-the command above creates a service, controller, model and routes file for `user` and set's you up for writing business logic. Alternatively, you might want to create one of the files (controllers, models, services, routes) so you make use of their independent flags:
+### `start`
 
-- controller:
+Starts the dolphjs server in production mode.
 
-  ```bash
-  dolph-cli g -c <name>
-  ```
+```bash
+dolph start
+```
 
-- service:
+### `watch`
 
-  ```bash
-  dolph-cli g -s <name>
-  ```
+Starts the dolphjs server in development mode (with hot-reloading).
 
-- model:
-
-  ```bash
-  dolph-cli g -m <name>
-  ```
-
-- route:
-
-  ```bash
-  dolph-cli g -r <name>
-  ```
+```bash
+dolph watch
+```
 
 ## Credit
 
-dolphjs-cli is inspired by methane-cli [https://github.com/adedoyin-Emmanuel/methane-cli]
+dolphjs-cli was originally inspired by methane-cli.
