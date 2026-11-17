@@ -5,3 +5,4 @@ dist
 src
 .env
 dolph-app.DS_Store
+bin/dolph
